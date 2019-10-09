@@ -30,7 +30,7 @@
   	</developers>
     
   	<scm>
-      	<connection>scm:git:https://github.com/efenglu/maven.git</connection>
+      	<connection>scm:git:https://github.com/rokuality/rokuality-java</connection>
       	<developerConnection>scm:git:ssh://github.com/rokuality/rokuality-java.git</developerConnection>
      	 <url>https://github.com/rokuality/rokuality-java</url>
       	<tag>HEAD</tag>
