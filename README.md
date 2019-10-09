@@ -8,7 +8,7 @@ Clone/Download and start the [Rokuality Server](https://github.com/rokuality/rok
 ### Getting started: Enabling Developer Mode on your Roku
 [Enabling developer mode](https://blog.roku.com/developer/developer-setup-guide) on your Roku device is very straight forward. Keep track of your device username and password as created during the basic walkthrough as you'll need them to pass to your DeviceCapabilities at driver startup. Once you've enabled developer mode on your device you should be able to hit the device console page at http://yourrokudeviceip
 
-### Getting started: Add the bindings to your Project
+### Getting started: Add the bindings to your Project (AWAITING PUBLICATION ON MAVEN CENTRAL - SOON!)
 To use Rokuality in your tests or application, add the `rokuality-java` dependency to your pom:
 ```xml
     <dependency>
