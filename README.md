@@ -79,14 +79,14 @@ To send remote button presses to the device you can do the following:
     // etc
     // etc
 ```
-All remote command are available. Also you can send literal characters to the device if you need to interact with a Roku search selector:
+All [remote command](https://github.com/rokuality/rokuality-java/blob/master/src/main/java/com/rokuality/core/enums/RokuButton.java) are available. Also you can send literal characters to the device if you need to interact with a Roku search selector:
 ```java
     rokuDriver.remote().sendKeys("typing out hello world on a search screen");
 ```
 
 #### Getting screen artifacts:
-Various methods exist for getting screen artifacts such as the screen image, sub screen image, screen recording during test, and screen text
-All remote command are available. Also you can send literal characters to the device if you need to interact with a Roku search selector:
+Various methods exist for getting screen artifacts such as the screen image, sub screen image, screen recording during test, and screen text:
+
 ```java
     // get the screen size
     rokuDriver.screen().getSize()
