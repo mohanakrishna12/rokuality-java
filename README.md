@@ -109,8 +109,8 @@ Screen text of the device is returned as a collection of ScreenText objects as f
     List<ScreenText> allScreenText = rokuDriver.screen().getText();
     for (ScreenText screenText : allScreenText) {
         System.out.println(screenText.getText());
-        System.out.println(screenText.getLength());
         System.out.println(screenText.getWidth());
+        System.out.println(screenText.getHeight());
         System.out.println(screenText.getLocation());
     }
 ```
