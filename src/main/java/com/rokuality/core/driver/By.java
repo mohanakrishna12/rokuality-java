@@ -8,6 +8,8 @@ public abstract class By {
 	 * Constructs a text based locator to search for within the text on the device screen.
 	 *
 	 * @param text - String The text to search for on the device screen, i.e. "hello world"
+	 * 
+	 * @return By - The constructed locator
 	 */
 	public static By Text(String text) {
 		return new ByText(text);
@@ -19,6 +21,8 @@ public abstract class By {
 	 * to a .png
 	 *
 	 * @param pathOrUrlToImageSnippetPNG - The path or URL to an image snippet to search for within the device screen.
+	 * 
+	 * @return By - The constructed locator
 	 */
 	public static By Image(String pathOrUrlToImageSnippetPNG) {
 		return new ByImage(pathOrUrlToImageSnippetPNG);

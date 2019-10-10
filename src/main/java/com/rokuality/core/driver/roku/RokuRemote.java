@@ -21,7 +21,7 @@ public class RokuRemote {
 	/**
 	 * Sends a remote control command to the device.
 	 *
-	 * @param RokuButton RokuButton - The button you wish to press on the device.
+	 * @param button - The button you wish to press on the device.
 	 * 
 	 * @throws RemoteInteractException If the remote button could not be pressed.
 	 */
