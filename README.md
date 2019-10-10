@@ -20,7 +20,7 @@ To use Rokuality in your tests or application, add the `rokuality-java` dependen
 ```
 
 ### The Basics:
-Because there's no native based test support built into Roku, the Rokuality bindings operate via Image Based Object Recognition and OCR techniques to identify 'elements' on the device screen and return them to your test scripts as Objects for verification and interaction. The project is modeled after the Selenium/Appium structure so if you've used those toolsets for browsers/mobile devices previously - this framework will look and feel very comfortable to you. See the [example tests](https://github.com/rokuality/rokuality/blob/integration/src/test/java/com/rokuality/test/tests/RokuTests.java) for a full list of samples.
+Because there's no native based test support built into Roku, the Rokuality bindings operate via Image Based Object Recognition and OCR techniques to identify 'elements' on the device screen and return them to your test scripts as Objects for verification and interaction. The project is modeled after the Selenium/Appium structure so if you've used those toolsets for browsers/mobile devices previously - this framework will look and feel very comfortable to you. See the [example tests](https://github.com/rokuality/rokuality-java/blob/master/src/test/java/com/rokuality/test/tests/RokuTests.java) for a full list of samples.
 
 #### Declare a driver to connect to the server:
 ```java
