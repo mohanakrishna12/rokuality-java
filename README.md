@@ -117,7 +117,7 @@ Screen text of the device is returned as a collection of ScreenText objects as f
 Alternatively you can get the entire device screen as a full string via `rokuDriver.screen().getTextAsString();`
 
 #### Device Capabilities explained:
-Various capabilities and values can be provided and passed to your RokuDriver instance at startup. Some of them are required and others are optional. The following are the minimum required capabilities required to start a driver session.
+Various capabilities and values can be provided and passed to your RokuDriver instance at startup. Some of them are required and others are optional. The following are the minimum required capabilities **required** to start a driver session.
 ```java
     // Declare a new DeviceCapability object
     DeviceCapabilities capabilities = new DeviceCapabilities();
@@ -125,7 +125,7 @@ Various capabilities and values can be provided and passed to your RokuDriver in
     // Indicates we want a Roku test session
     capabilities.addCapability("Platform", "Roku");
 
-    // App ocation (path or url to a sideloadable zip)
+    // App location (path or url to a sideloadable zip)
     capabilities.addCapability("AppPackage", "/path/or/url/to/your/sideloadable/app.zip");
 
     // Your Roku device ip address
