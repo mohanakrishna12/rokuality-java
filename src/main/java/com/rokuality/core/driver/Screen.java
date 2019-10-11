@@ -61,7 +61,7 @@ public class Screen {
 	/**
 	 * Gets the device screen text as a ScreenText collection with details about each found word on the screen.
 	 *
-	 * @return List<ScreenText> - A list of ScreenText objects containing details of every found word on the device screen.
+	 * @return com.rokuality.core.driver.ScreenText - A list of ScreenText objects containing details of every found word on the device screen.
 	 * @throws ScreenException If the device screen text fails to capture.
 	 */
 	public List<ScreenText> getText() {
@@ -79,7 +79,7 @@ public class Screen {
 	 * @param subScreenWidth int - The subscreen width ending point to capture.
 	 * @param subScreenHeight - int The subscreen height ending point to capture.
 	 * 
-	 * @return List<ScreenText> - A list of ScreenText objects containing details of every found word on the device sub screen.
+	 * @return com.rokuality.core.driver.ScreenText - A list of ScreenText objects containing details of every found word on the device sub screen.
 	 * @throws ScreenException If the device sub screen text fails to capture.
 	 */
 	public List<ScreenText> getText(int subScreenX, int subScreenY, int subScreenWidth, int subScreenHeight) {

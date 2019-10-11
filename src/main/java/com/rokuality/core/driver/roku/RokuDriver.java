@@ -56,6 +56,8 @@ public class RokuDriver extends BaseDriver {
 
 	/**
 	 * Initiates the Finder for finding elements.
+	 * 
+	 * @return Finder
 	 */
 	public Finder finder() {
 		return new Finder(httpClient, super.getSession());
@@ -63,6 +65,8 @@ public class RokuDriver extends BaseDriver {
 
 	/**
 	 * Initiates the Roku Remote for sending remote control commands.
+	 * 
+	 * @return RokuRemote
 	 */
 	public RokuRemote remote() {
 		return new RokuRemote(httpClient, super.getSession());
@@ -70,6 +74,8 @@ public class RokuDriver extends BaseDriver {
 
 	/**
 	 * Gets information about the device under test.
+	 * 
+	 * @return RokuInfo
 	 */
 	public RokuInfo info() {
 		return new RokuInfo(httpClient, super.getSession());
@@ -77,6 +83,8 @@ public class RokuDriver extends BaseDriver {
 
 	/**
 	 * Initiates the Screen for getting information and artifacts from the device screen.
+	 * 
+	 * @return Screen
 	 */
 	public Screen screen() {
 		return new Screen(httpClient, super.getSession());
@@ -84,6 +92,8 @@ public class RokuDriver extends BaseDriver {
 
 	/**
 	 * Initiates Options for various driver and finder settings.
+	 * 
+	 * @return Options
 	 */
 	public Options options() {
 		return new Options(httpClient, super.getSession());
