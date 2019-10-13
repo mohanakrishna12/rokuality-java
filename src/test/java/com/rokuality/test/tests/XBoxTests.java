@@ -4,13 +4,18 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 
 import com.rokuality.core.driver.By;
 import com.rokuality.core.driver.DeviceCapabilities;
 import com.rokuality.core.driver.Element;
+import com.rokuality.core.driver.ScreenText;
+import com.rokuality.core.driver.xbox.XBoxDeviceInfo;
 import com.rokuality.core.driver.xbox.XBoxDriver;
+import com.rokuality.core.enums.XBoxButton;
 import com.rokuality.core.exceptions.NoSuchElementException;
 import com.rokuality.core.exceptions.ServerFailureException;
+import com.rokuality.core.exceptions.SessionNotStartedException;
 
 import org.testng.annotations.*;
 
@@ -267,6 +272,7 @@ public class XBoxTests {
 
 			Exception exception = null;
 			try {
+				xboxDriver.options().setElementTimeout(1000);
 				xboxDriver.finder().findElement(by, 500, 500, 100, 100);
 			} catch (NoSuchElementException nse) {
 				exception = nse;
@@ -274,6 +280,221 @@ public class XBoxTests {
 			Assert.assertNotNull(exception);
 		}
 		
+	}
+
+	@Test(groups = { "XBox" })
+	@Features("XBox")
+	public void remoteControlTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		xboxDriver = new XBoxDriver(SERVER_URL, caps);
+		xboxDriver.options().setElementTimeout(8000);
+
+		xboxDriver.finder().findElement(By.Text("featured"));
+		xboxDriver.remote().pressButton(XBoxButton.UP_ARROW);
+		xboxDriver.remote().pressButton(XBoxButton.RIGHT_ARROW);
+		xboxDriver.remote().pressButton(XBoxButton.RIGHT_ARROW);
+		xboxDriver.remote().pressButton(XBoxButton.RIGHT_ARROW);
+		xboxDriver.remote().pressButton(XBoxButton.A);
+		xboxDriver.finder().findElement(By.Text("Watch with Your TV Provider"));
+		System.out.println(xboxDriver.screen().getTextAsString());
+		xboxDriver.remote().pressButton(XBoxButton.B);
+		xboxDriver.remote().pressButton(XBoxButton.B);
+		xboxDriver.finder().findElement(By.Text("featured"));
+
+		System.out.println(xboxDriver.screen().getRecording());
+
+	}
+
+	@Test(groups = { "XBox" })
+	@Features("XBox")
+	public void deviceInfoTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		xboxDriver = new XBoxDriver(SERVER_URL, caps);
+
+		XBoxDeviceInfo deviceInfo = xboxDriver.info().getDeviceInfo();
+		Assert.assertEquals("Xbox One", deviceInfo.getConsoleType());
+
+	}
+
+	@Test(groups = { "XBox" })
+	@Features("XBox")
+	public void getScreenTextGoogleVisionTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("OCRType", "GoogleVision");
+		caps.addCapability("GoogleCredentials", System.getProperty("user.home") + File.separator + "Service.json");
+		xboxDriver = new XBoxDriver(SERVER_URL, caps);
+
+		xboxDriver.options().setElementTimeout(8000);
+		xboxDriver.finder().findElement(By.Text("featured"));
+
+		List<ScreenText> allScreenText = xboxDriver.screen().getText();
+		boolean matchFound = false;
+		for (ScreenText screenText : allScreenText) {
+			if (screenText.getText().equals("Featured")) {
+				matchFound = true;
+
+				System.out.println(screenText);
+				Point textLocation = screenText.getLocation();
+				Assert.assertTrue(textLocation.x > 90 && textLocation.x < 110);
+				Assert.assertTrue(textLocation.y > 440 && textLocation.y < 460);
+
+				Dimension textSize = screenText.getSize();
+				Assert.assertTrue(textSize.width > 130 && textSize.width < 140);
+				Assert.assertTrue(textSize.height > 20 && textSize.height < 30);
+
+				Assert.assertTrue(screenText.getWidth() > 130 && screenText.getWidth() < 140);
+				Assert.assertTrue(screenText.getHeight() > 20 && screenText.getHeight() < 30);
+
+				break;
+			}
+		}
+		Assert.assertTrue(matchFound);
+
+		List<ScreenText> allSubScreenText = xboxDriver.screen().getText(1, 1, 500, 500);
+		Assert.assertFalse(allSubScreenText.isEmpty());
+		Assert.assertTrue(allScreenText.size() != allSubScreenText.size());
+
+		String subScreenTxt = xboxDriver.screen().getTextAsString(80, 400, 150, 50);
+		Assert.assertFalse(subScreenTxt.toLowerCase().contains("featured"));
+		Assert.assertTrue(xboxDriver.screen().getTextAsString().toLowerCase().contains("featured"));
+
+	}
+
+	@Test(groups = { "XBox" })
+	@Features("XBox")
+	public void getScreenSizeTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		xboxDriver = new XBoxDriver(SERVER_URL, caps);
+
+		Dimension screenSize = xboxDriver.screen().getSize();
+		System.out.println(screenSize);
+		Assert.assertTrue(screenSize.getWidth() > 1900 && screenSize.getWidth() < 1930);
+		Assert.assertTrue(screenSize.getHeight() > 1000 && screenSize.getHeight() < 1090);
+
+	}
+
+	@Test(groups = { "XBox" })
+	@Features("XBox")
+	public void getScreenArtifactsTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		xboxDriver = new XBoxDriver(SERVER_URL, caps);
+
+		File screenImage = xboxDriver.screen().getImage();
+		System.out.println("Screen image saved to: " + screenImage.getAbsolutePath());
+		Assert.assertTrue(screenImage.exists() && screenImage.isFile());
+
+		File screenSubImage = xboxDriver.screen().getImage(1, 1, 300, 300);
+		System.out.println("Screen sub image saved to: " + screenSubImage.getAbsolutePath());
+		Assert.assertTrue(screenSubImage.exists() && screenSubImage.isFile());
+
+		File screenRecording = xboxDriver.screen().getRecording();
+		System.out.println("Screen recording saved to: " + screenRecording.getAbsolutePath());
+		Assert.assertTrue(screenRecording.exists() && screenRecording.isFile());
+		
+		File screenRecording2 = xboxDriver.screen().getRecording();
+		Assert.assertTrue(screenRecording2.exists() && screenRecording2.isFile());
+		Assert.assertFalse(screenRecording.equals(screenRecording2));
+
+	}
+
+	@Test(groups = { "XBox" })
+	@Features("XBox")
+	public void sessionNotStartedInvalidCapsTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.removeCapability("DeviceIPAddress");
+
+		boolean success = false;
+		try {
+			xboxDriver = new XBoxDriver(SERVER_URL, caps);
+		} catch (SessionNotStartedException e) {
+			success = e.getMessage().contains("DeviceIPAddress");
+		}
+		Assert.assertTrue(success);
+		caps.addCapability("DeviceIPAddress", "1.1.1.1");
+
+		success = false;
+		caps.removeCapability("App");
+		try {
+			xboxDriver = new XBoxDriver(SERVER_URL, caps);
+		} catch (SessionNotStartedException e) {
+			System.out.println(e.getMessage());
+			success = e.getMessage().contains("You must provide the App capability");
+		}
+		Assert.assertTrue(success);
+
+		success = false;
+		caps.addCapability("App", "MTV");
+		caps.removeCapability("HomeHubIPAddress");
+		try {
+			xboxDriver = new XBoxDriver(SERVER_URL, caps);
+		} catch (SessionNotStartedException e) {
+			System.out.println(e.getMessage());
+			success = e.getMessage().contains("The HomeHubIPAddress capability cannot be null or empty!");
+		}
+		Assert.assertTrue(success);
+
+		success = false;
+		caps.addCapability("HomeHubIPAddress", "1.1.1.1");
+		caps.removeCapability("DeviceName");
+		try {
+			xboxDriver = new XBoxDriver(SERVER_URL, caps);
+		} catch (SessionNotStartedException e) {
+			System.out.println(e.getMessage());
+			success = e.getMessage().contains("The DeviceName capability cannot be null or empty!");
+		}
+		Assert.assertTrue(success);
+
+	}
+
+	@Test(groups = { "XBox" })
+	@Features("XBox")
+	public void sessionNotStartedDeviceNotReachableTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("DeviceIPAddress", "1.1.1.1");
+
+		boolean success = false;
+		try {
+			xboxDriver = new XBoxDriver(SERVER_URL, caps);
+		} catch (SessionNotStartedException e) {
+			success = e.getMessage().contains("Is the device online");
+		}
+		Assert.assertTrue(success);
+
+	}
+
+	@Test(groups = { "XBox" })
+	@Features("XBox")
+	public void sessionNotStartedInstallFailedTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("AppPackage", "no package here");
+
+		boolean success = false;
+		try {
+			xboxDriver = new XBoxDriver(SERVER_URL, caps);
+		} catch (SessionNotStartedException e) {
+			success = true;
+			Assert.assertTrue(e.getMessage().contains("Failed to decode app package file"));
+		}
+		Assert.assertTrue(success);
+
+		caps.addCapability("AppPackage", "http://www.youwontfindanypackagehereatthislocationipromise.com");
+		success = false;
+		try {
+			xboxDriver = new XBoxDriver(SERVER_URL, caps);
+		} catch (SessionNotStartedException e) {
+			success = true;
+			Assert.assertTrue(e.getMessage().contains("The provided app package is not valid"));
+		}
+		Assert.assertTrue(success);
+
 	}
 
 	

@@ -69,6 +69,15 @@ public class XBoxDriver extends BaseDriver {
 	}
 
 	/**
+	 * Gets information about the device under test.
+	 * 
+	 * @return XBoxInfo
+	 */
+	public XBoxInfo info() {
+		return new XBoxInfo(httpClient, super.getSession());
+	}
+
+	/**
 	 * Initiates the Screen for getting information and artifacts from the device screen.
 	 * 
 	 * @return Screen
