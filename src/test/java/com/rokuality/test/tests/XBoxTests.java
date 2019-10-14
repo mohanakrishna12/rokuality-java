@@ -57,6 +57,10 @@ public class XBoxTests {
 		// Indicates we want a Roku test session
 		capabilities.addCapability("Platform", "XBox");
 
+		// OCR module (Tesseract or GoogleVision)
+		capabilities.addCapability("OCRType", "GoogleVision");
+		capabilities.addCapability("GoogleCredentials", System.getProperty("user.home") + File.separator + "Service.json");
+		
 		// The ip address of your harmony
 		capabilities.addCapability("HomeHubIPAddress", "192.168.1.41");
 		
@@ -76,10 +80,6 @@ public class XBoxTests {
 		// OPTIONAL A forced image resolution size that all image captures are resized
 		// to (width/height).
 		capabilities.addCapability("ScreenSizeOverride", "1920x1080");
-
-		// OPTIONAL ocr module 
-		capabilities.addCapability("OCRType", "GoogleVision");
-		capabilities.addCapability("GoogleCredentials", System.getProperty("user.home") + File.separator + "Service.json");
 
 		// OPTIONAL - enforce ocr case sensitivity. If not provided all words during ocr
 		// evaluation are forced to lowercase

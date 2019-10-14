@@ -135,6 +135,9 @@ Various capabilities and values can be provided and passed to your driver instan
     // Indicates we want a Roku test session
     capabilities.addCapability("Platform", "Roku");
 
+    // OCR module - Options are 'Tesseract' or 'GoogleVision'
+    capabilities.addCapability("OCRType", "Tesseract");
+        
     // App location (path or url to a sideloadable zip)
     capabilities.addCapability("AppPackage", "/path/or/url/to/your/sideloadable/app.zip");
 
@@ -157,6 +160,9 @@ Various capabilities and values can be provided and passed to your driver instan
     // Indicates we want a XBox test session
     capabilities.addCapability("Platform", "XBox");
 
+    // OCR module - Options are 'Tesseract' or 'GoogleVision'
+    capabilities.addCapability("OCRType", "Tesseract");
+        
     // App location (path or url to a valid appxbundle app)
     // NOTE - if ommitted the server will assume the package is already installed
     // and will attempt to launch it
@@ -187,7 +193,7 @@ Various capabilities and values can be provided and passed to your driver instan
 | DevicePassword | The Roku dev console password created when you enabled developer mode on your Roku device   | Required | String |
 | ImageMatchSimilarity | An optional image match similarity default used during Image locator evaluations. A lower value will allow for greater tolerance of image disimilarities between the image locator and the screen, BUT will also increase the possibility of a false positive.  | Optional | Double. Defaults to .90 |
 | ScreenSizeOverride | An optional 'WIDTHxHEIGHT' cap that all screen image captures will be resized to prior to match evaluation. Useful if you want to enforce test consistence across multiple device types and multiple developer machines or ci environments.  | Optional | String - I.e. a value of '1800x1200' will ensure that all image captures are resized to those specs before the locator evaluation happens no matter what the actual device screen size is.  |
-| OCRType | An optional OCR type - Options are 'Tesseract' OR 'GoogleVision'. If not provided the default 'Tesseract' OCR engine will be used. In most cases Tesseract is more than enough but if you find that your textual evalutions are lacking reliability you can provide 'GoogleVision' as a more powerful alternative. BUT if the capability is set you MUST have a valid Google Vision account setup and provide the 'GoogleCredentials' capability with a valid file path to the oath2 .json file with valid credentials for the Google Vision service.  | Optional | String - Defaults to 'Tesseract' 
+| OCRType | The OCR type - Options are 'Tesseract' OR 'GoogleVision'. In most cases Tesseract is more than enough but if you find that your textual evalutions are lacking reliability you can provide 'GoogleVision' as a more powerful alternative. BUT if the capability is set you MUST have a valid Google Vision account setup and provide the 'GoogleCredentials' capability with a valid file path to the oath2 .json file with valid credentials for the Google Vision service.  | Required | String 
 | GoogleCredentials | The path to a valid .json Google Auth key service file. | Optional but Required if the 'OCRType' capability is set to 'GoogleVision' | The .json service key must exist on the machine triggering the tests. See [Using Google Vision](#using-google-vision-ocr) for additional details.  |
 | HomeHubIPAddress | The ip address of your logitech harmony hub. | Required for those devices that indicate it during their setup requirement, i.e. XBox | String - See the [why harmony](https://github.com/rokuality/rokuality-server) and [configuring your harmony](https://github.com/rokuality/rokuality-server) sections of the server page for details. |
 | DeviceName | The name of your device as saved in your Harmony hub i.e. 'MyXBoxOne'. | Required for those devices that indicate it during their setup requirement, i.e. XBox | String |
