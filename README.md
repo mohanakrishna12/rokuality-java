@@ -1,6 +1,6 @@
 # Rokuality Java - End to End Automation for Roku and XBox!
 
-The Rokuality Server allows you to distribute Roku and XBox end to end tests across multiple devices on your network. (Playstation and other devices coming soon!) The project goal is to provide a no cost/low cost open source solution for various video streaming platforms that otherwise don't offer an easily automatable solution! Clone and start the [Rokuality Server](https://github.com/rokuality/rokuality-server), and start writing tests!
+The Rokuality platform allows you to distribute Roku and XBox end to end tests across multiple devices on your network. (Playstation and other devices coming soon!) The project goal is to provide a no cost/low cost open source solution for various video streaming platforms that otherwise don't offer an easily automatable solution! Clone and start the [Rokuality Server](https://github.com/rokuality/rokuality-server), and start writing tests!
 
 ### Getting started: Get the Server
 Clone/Download and start the [Rokuality Server](https://github.com/rokuality/rokuality-server) which acts as a lightweight web server proxy for your test traffic. The server does all the 'heavy lifting' on the backend.
@@ -150,7 +150,6 @@ Various capabilities and values can be provided and passed to your driver instan
 ```
 
 #### Xbox
-#### Roku
 ```java
     // Declare a new DeviceCapability object
     DeviceCapabilities capabilities = new DeviceCapabilities();
