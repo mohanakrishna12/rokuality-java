@@ -11,7 +11,7 @@ To use Rokuality in your tests or application, add the `rokuality-java` dependen
     <dependency>
         <groupId>com.rokuality</groupId>
         <artifactId>rokuality-java</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
         <scope>test</scope>
     </dependency>
 ```
