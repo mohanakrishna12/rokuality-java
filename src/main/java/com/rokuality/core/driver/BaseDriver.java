@@ -1,11 +1,16 @@
 package com.rokuality.core.driver;
 
+import java.io.File;
+import java.util.Iterator;
+
 import com.rokuality.core.exceptions.ServerFailureException;
+import com.rokuality.core.utils.FileToStringUtils;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+@SuppressWarnings("unchecked")
 public class BaseDriver {
 
 	private JSONObject session = null;
@@ -36,6 +41,25 @@ public class BaseDriver {
 
 	protected String getServerURL() {
 		return serverURL;
+	}
+
+	protected JSONObject prepareCapJSON(JSONObject capabilities) {
+		JSONObject preparedJSON = new JSONObject();
+		Iterator<String> keys = capabilities.keySet().iterator();
+		while (keys.hasNext()) {
+			String key = keys.next();
+			Object value = capabilities.get(key);
+
+			File file = new File(String.valueOf(value));
+			if (file.exists() && file.isFile()) {
+				String encodedData = new FileToStringUtils().convertFileToBase64String(file);
+				preparedJSON.put(key, encodedData);
+			} else {
+				preparedJSON.put(key, value);
+			}
+		}
+
+		return preparedJSON;
 	}
 
 }

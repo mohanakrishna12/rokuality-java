@@ -23,7 +23,6 @@ public class HttpClient {
     }
 
     public JSONObject postToServer(String servletName, JSONObject jsonRequest) {
-
         int socketTimeout = DEFAULT_TIMEOUT;
         int connectTimeout = DEFAULT_TIMEOUT;
 

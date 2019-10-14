@@ -102,7 +102,7 @@ public class Screen {
 		List<ScreenText> screenText = getText();
 		String constructedTxt = "";
 		for (ScreenText text : screenText) {
-			constructedTxt += text.getText();
+			constructedTxt += " " + text.getText();
 		}
 		return constructedTxt;
 	}
@@ -122,7 +122,7 @@ public class Screen {
 		List<ScreenText> screenText = getText(subScreenX, subScreenY, subScreenWidth, subScreenHeight);
 		String constructedTxt = "";
 		for (ScreenText text : screenText) {
-			constructedTxt += text.getText();
+			constructedTxt += " " + text.getText();
 		}
 		return constructedTxt;
 	}

@@ -1,4 +1,4 @@
-package com.rokuality.core.driver.roku;
+package com.rokuality.core.driver.xbox;
 
 import com.rokuality.core.driver.BaseDriver;
 import com.rokuality.core.driver.DeviceCapabilities;
@@ -13,20 +13,20 @@ import com.rokuality.core.httpexecutor.HttpClient;
 import org.json.simple.JSONObject;
 
 @SuppressWarnings("unchecked")
-public class RokuDriver extends BaseDriver {
+public class XBoxDriver extends BaseDriver {
 
 	private ServerPostHandler serverPostHandler = null;
 	private HttpClient httpClient = null;
 
 	/**
-	 * Starts a new Roku driver session.
+	 * Starts a new XBox driver session.
 	 *
 	 * @param serverURL String - The url your server is listening at, i.e. http://localhost:port
 	 * @param capabilities DeviceCapabilities - The capabilities for your driver session.
 	 * 
 	 * @throws SessionNotStartedException If a session could not be initiated.
 	 */
-	public RokuDriver(String serverURL, DeviceCapabilities capabilities) {
+	public XBoxDriver(String serverURL, DeviceCapabilities capabilities) {
 		httpClient = new HttpClient(serverURL);
 		serverPostHandler = new ServerPostHandler(httpClient);
 		super.setServerURL(serverURL);
@@ -38,7 +38,7 @@ public class RokuDriver extends BaseDriver {
 	}
 
 	/**
-	 * Stops the Roku driver session and releases all assets. Should be called as the last command of every session.
+	 * Stops the XBox driver session and releases all assets. Should be called as the last command of every session.
 	 * 
 	 * @throws ServerFailureException If a session could not be properly torn down for any reason.
 	 */
@@ -60,21 +60,21 @@ public class RokuDriver extends BaseDriver {
 	}
 
 	/**
-	 * Initiates the Roku Remote for sending remote control commands.
+	 * Initiates the XBox Remote for sending remote control commands.
 	 * 
-	 * @return RokuRemote
+	 * @return XBoxRemote
 	 */
-	public RokuRemote remote() {
-		return new RokuRemote(httpClient, super.getSession());
+	public XBoxRemote remote() {
+		return new XBoxRemote(httpClient, super.getSession());
 	}
 
 	/**
 	 * Gets information about the device under test.
 	 * 
-	 * @return RokuInfo
+	 * @return XBoxInfo
 	 */
-	public RokuInfo info() {
-		return new RokuInfo(httpClient, super.getSession());
+	public XBoxInfo info() {
+		return new XBoxInfo(httpClient, super.getSession());
 	}
 
 	/**
