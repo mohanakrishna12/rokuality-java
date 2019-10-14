@@ -60,6 +60,9 @@ public class RokuTests {
 		// Indicates we want a Roku test session
 		capabilities.addCapability("Platform", "Roku");
 
+		// OCR module - Options are 'Tesseract' or 'GoogleVision'
+		capabilities.addCapability("OCRType", "Tesseract");
+
 		// Location (path or url to a sideloadable zip)
 		capabilities.addCapability("AppPackage", "https://rokualitypublic.s3.amazonaws.com/RokualityDemoApp.zip");
 
@@ -77,9 +80,6 @@ public class RokuTests {
 		// OPTIONAL A forced image resolution size that all image captures are resized
 		// to (width/height).
 		capabilities.addCapability("ScreenSizeOverride", "1280x820");
-
-		// OPTIONAL ocr module 
-		capabilities.addCapability("OCRType", "Tesseract");
 
 		// OPTIONAL - enforce ocr case sensitivity. If not provided all words during ocr
 		// evaluation are forced to lowercase
