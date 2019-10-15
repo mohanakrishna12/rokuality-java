@@ -29,10 +29,10 @@ The Rokuality bindings operate via Image Based Object Recognition and OCR techni
 #### Declare a driver to connect to the server:
 ```java
     // Roku
-    RokuDriver rokuDriver = new RokuDriver("http://yourserverurl:yourrunningserverport", DeviceCapabilities);
+    RokuDriver driver = new RokuDriver("http://yourserverurl:yourrunningserverport", DeviceCapabilities);
 
     // XBox
-    XBoxDriver xboxDriver = new XBoxDriver("http://yourserverurl:yourrunningserverport", DeviceCapabilities);
+    XBoxDriver driver = new XBoxDriver("http://yourserverurl:yourrunningserverport", DeviceCapabilities);
 ```
 This will take care of installing/launching your device app package, ensure the device is available and ready for test, and start a dedicated session on your device as indicated via your DeviceCapabilities object. See [Device Capabilities](#device-capabilities-explained) for an explanation of what capabilities are available for your driver startup.
 
