@@ -72,8 +72,8 @@ A found element can be stored to an object and additional details about it can b
 The element details include the elements location and size details as found on the device, the text contained within the match (relevent if an image snippet locator was provided), and the confidence score of the match with higher values indicating the confidence in your find:
 ```xml
     java.awt.Point[x=368,y=319]
-    388.0
-    658.0
+    45
+    19
     91.33713
     Hello World!
 ```
@@ -186,11 +186,11 @@ Various capabilities and values can be provided and passed to your driver instan
 
 | Capability  | Description | Required Or Optional | Notes |
 | ------------- | ------------- | ------------- | ------------- |
-| Platform | Indicates the target platform for the tests. Currently only 'Roku' is supported but XBox and Playstation coming soon.  | Required | String |
-| AppPackage | The sideloadable zip to be installed. Must be a valid file path to a .zip OR a valid url to a .zip.  | Required | String |
-| DeviceIPAddress | The ip address of your Roku  | Required | Your roku device MUST be reachable from the machine running the Rokuality server. |
-| DeviceUsername | The Roku dev console username created when you enabled developer mode on your Roku device  | Required | String |
-| DevicePassword | The Roku dev console password created when you enabled developer mode on your Roku device   | Required | String |
+| Platform | Indicates the target platform for the tests. Currently only 'Roku' and 'XBox' are supported but Playstation and other devices coming soon.  | Required | String |
+| AppPackage | The sideloadable zip to be installed (Roku), or the .appxbundle (XBox). Must be a valid file path OR a valid url.  | Required | String |
+| DeviceIPAddress | The ip address of your Roku or XBox  | Required | Your device MUST be reachable from the machine running the Rokuality server. |
+| DeviceUsername | The dev console username created when you enabled developer mode on your device  | Required - Roku Only | String |
+| DevicePassword | The dev console password created when you enabled developer mode on your device   | Required - Roku Only | String |
 | ImageMatchSimilarity | An optional image match similarity default used during Image locator evaluations. A lower value will allow for greater tolerance of image disimilarities between the image locator and the screen, BUT will also increase the possibility of a false positive.  | Optional | Double. Defaults to .90 |
 | ScreenSizeOverride | An optional 'WIDTHxHEIGHT' cap that all screen image captures will be resized to prior to match evaluation. Useful if you want to enforce test consistence across multiple device types and multiple developer machines or ci environments.  | Optional | String - I.e. a value of '1800x1200' will ensure that all image captures are resized to those specs before the locator evaluation happens no matter what the actual device screen size is.  |
 | OCRType | The OCR type - Options are 'Tesseract' OR 'GoogleVision'. In most cases Tesseract is more than enough but if you find that your textual evalutions are lacking reliability you can provide 'GoogleVision' as a more powerful alternative. BUT if the capability is set to 'GoogleVision' you MUST have a valid Google Vision account setup and provide the 'GoogleCredentials' capability with a valid file path to the oath2 .json file with valid credentials for the Google Vision service.  | Required | String 
