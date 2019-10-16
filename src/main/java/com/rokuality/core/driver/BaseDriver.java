@@ -3,12 +3,10 @@ package com.rokuality.core.driver;
 import java.io.File;
 import java.util.Iterator;
 
-import com.rokuality.core.exceptions.ServerFailureException;
 import com.rokuality.core.utils.FileToStringUtils;
+import com.rokuality.core.utils.JsonUtils;
 
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 @SuppressWarnings("unchecked")
 public class BaseDriver {
@@ -25,14 +23,7 @@ public class BaseDriver {
 	}
 
 	public JSONObject getSession() {
-		JSONObject deepCopySession = null;
-		try {
-			deepCopySession = (JSONObject) new JSONParser().parse(session.toJSONString());
-		} catch (ParseException e) {
-			throw new ServerFailureException("Failed to retrieve session details!");
-		}
-		
-		return deepCopySession;
+		return JsonUtils.deepCopy(session);
 	}
 
 	protected void setServerURL(String serverURL) {

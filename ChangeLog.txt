@@ -1,0 +1,8 @@
+1.1.1 - Changes from 1.1.0
+1. Fixes a possible deep copy issue with session data within a driver instance.
+2. Removes the XBoxRemote.sendKeys() method as it's not yet supported on the server for XBox.
+
+1.1.0 - Changes from 1.0.0
+1. Adds XBox support
+
+1.0.0 - Initial Release

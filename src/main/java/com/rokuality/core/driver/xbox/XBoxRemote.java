@@ -4,6 +4,7 @@ import com.rokuality.core.driver.ServerPostHandler;
 import com.rokuality.core.enums.XBoxButton;
 import com.rokuality.core.exceptions.RemoteInteractException;
 import com.rokuality.core.httpexecutor.HttpClient;
+import com.rokuality.core.utils.JsonUtils;
 
 import org.json.simple.JSONObject;
 
@@ -26,22 +27,10 @@ public class XBoxRemote {
 	 * @throws RemoteInteractException If the remote button could not be pressed.
 	 */
 	public void pressButton(XBoxButton button) {
-		session.put("action", "press_button");
-		session.put("remote_button", button.value());
-		serverPostHandler.postToServerWithHandling("remote", session, RemoteInteractException.class);
-	}
-
-	/**
-	 * Sends a literal string of text to the device. Only relevant if you are interacting with a Roku text input.
-	 *
-	 * @param textToType String - The text you wish to type into the input field.
-	 * 
-	 * @throws RemoteInteractException If the input fails to be sent.
-	 */
-	public void sendKeys(String textToType) {
-		session.put("action", "send_keys");
-		session.put("text", textToType);
-		serverPostHandler.postToServerWithHandling("remote", session, RemoteInteractException.class);
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "press_button");
+		readySession.put("remote_button", button.value());
+		serverPostHandler.postToServerWithHandling("remote", readySession, RemoteInteractException.class);
 	}
 
 }
