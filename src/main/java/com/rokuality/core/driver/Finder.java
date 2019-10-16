@@ -41,7 +41,7 @@ public class Finder {
 	 * @param subScreenX int - The x coordinate starting point of the subscreen.
 	 * @param subScreenY int - The y coordinate starting point of the subscreen.
 	 * @param subScreenWidth int - The subscreen width ending point.
-	 * @param subScreenHeight - int The subscreen height ending point.
+	 * @param subScreenHeight int - The subscreen height ending point.
 	 * 
 	 * @return Element - An Element object containing details about the elements location and contents.
 	 * @throws NoSuchElementException If the locator can not be found on the screen.
