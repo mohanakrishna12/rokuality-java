@@ -6,6 +6,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.rokuality.core.exceptions.ServerFailureException;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -92,4 +97,15 @@ public class JsonUtils {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
+
+    public static JSONObject deepCopy(JSONObject json) {
+		JSONObject deepCopyJSON = null;
+		try {
+			deepCopyJSON = (JSONObject) new JSONParser().parse(json.toJSONString());
+		} catch (ParseException e) {
+			throw new ServerFailureException("Failed to retrieve session details!");
+		}
+		
+		return deepCopyJSON;
+	}
 }

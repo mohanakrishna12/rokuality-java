@@ -3,6 +3,7 @@ package com.rokuality.core.driver;
 import com.rokuality.core.exceptions.NoSuchElementException;
 import com.rokuality.core.httpexecutor.HttpClient;
 import com.rokuality.core.utils.FileToStringUtils;
+import com.rokuality.core.utils.JsonUtils;
 
 import org.json.simple.JSONObject;
 
@@ -26,9 +27,10 @@ public class Finder {
 	 */
 	public Element findElement(By by) {
 		by = new FileToStringUtils().prepareLocator(by);
-		session.put("action", "find");
-		session.put("element_locator", by.toString());
-		return new Element(serverPostHandler.postToServerWithHandling("element", session, NoSuchElementException.class));
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "find");
+		readySession.put("element_locator", by.toString());
+		return new Element(serverPostHandler.postToServerWithHandling("element", readySession, NoSuchElementException.class));
 	}
 
 	/**
@@ -46,13 +48,14 @@ public class Finder {
 	 */
 	public Element findElement(By by, int subScreenX, int subScreenY, int subScreenWidth, int subScreenHeight) {
 		by = new FileToStringUtils().prepareLocator(by);
-		session.put("action", "find");
-		session.put("element_locator", by.toString());
-		session.put("sub_screen_x", subScreenX);
-		session.put("sub_screen_y", subScreenY);
-		session.put("sub_screen_width", subScreenWidth);
-		session.put("sub_screen_height", subScreenHeight);
-		return new Element(serverPostHandler.postToServerWithHandling("element", session, NoSuchElementException.class));
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "find");
+		readySession.put("element_locator", by.toString());
+		readySession.put("sub_screen_x", subScreenX);
+		readySession.put("sub_screen_y", subScreenY);
+		readySession.put("sub_screen_width", subScreenWidth);
+		readySession.put("sub_screen_height", subScreenHeight);
+		return new Element(serverPostHandler.postToServerWithHandling("element", readySession, NoSuchElementException.class));
 	}
 
 }

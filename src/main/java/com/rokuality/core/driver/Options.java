@@ -2,6 +2,7 @@ package com.rokuality.core.driver;
 
 import com.rokuality.core.exceptions.ServerFailureException;
 import com.rokuality.core.httpexecutor.HttpClient;
+import com.rokuality.core.utils.JsonUtils;
 
 import org.json.simple.JSONObject;
 
@@ -26,9 +27,10 @@ public class Options {
 	 * @throws ServerFailureException If the image match similarity cannot be applied.
 	 */
 	public void setImageMatchSimilarity(double imageMatchSimilarity) {
-		session.put("action", "image_match_similarity");
-		session.put("image_match_similarity", String.valueOf(imageMatchSimilarity));
-		serverPostHandler.postToServerWithHandling("settings", session, ServerFailureException.class);
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "image_match_similarity");
+		readySession.put("image_match_similarity", String.valueOf(imageMatchSimilarity));
+		serverPostHandler.postToServerWithHandling("settings", readySession, ServerFailureException.class);
 	}
 
 	/**
@@ -43,9 +45,10 @@ public class Options {
 	 * @throws ServerFailureException If the timeout cannot be applied.
 	 */
 	public void setElementTimeout(long timeoutInMilliseconds) {
-		session.put("action", "element_find_timeout");
-		session.put("element_find_timeout", String.valueOf(timeoutInMilliseconds));
-		serverPostHandler.postToServerWithHandling("settings", session, ServerFailureException.class);
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "element_find_timeout");
+		readySession.put("element_find_timeout", String.valueOf(timeoutInMilliseconds));
+		serverPostHandler.postToServerWithHandling("settings", readySession, ServerFailureException.class);
 	}
 
 	/**
@@ -57,9 +60,10 @@ public class Options {
 	 * @throws ServerFailureException If the poll interval cannot be applied.
 	 */
 	public void setElementPollInterval(long pollIntervalInMilliseconds) {
-		session.put("action", "element_polling_interval");
-		session.put("element_polling_interval", String.valueOf(pollIntervalInMilliseconds));
-		serverPostHandler.postToServerWithHandling("settings", session, ServerFailureException.class);
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "element_polling_interval");
+		readySession.put("element_polling_interval", String.valueOf(pollIntervalInMilliseconds));
+		serverPostHandler.postToServerWithHandling("settings", readySession, ServerFailureException.class);
 	}
 
 }

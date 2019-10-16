@@ -3,6 +3,7 @@ package com.rokuality.core.driver.xbox;
 import com.rokuality.core.driver.ServerPostHandler;
 import com.rokuality.core.exceptions.ServerFailureException;
 import com.rokuality.core.httpexecutor.HttpClient;
+import com.rokuality.core.utils.JsonUtils;
 
 import org.json.simple.JSONObject;
 
@@ -23,8 +24,9 @@ public class XBoxInfo {
 	 * @return XBoxDeviceInfo - Various information about the device under test.
 	 */
 	public XBoxDeviceInfo getDeviceInfo() {
-		session.put("action", "device_info");
-		return new XBoxDeviceInfo(serverPostHandler.postToServerWithHandling("info", session, ServerFailureException.class));
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "device_info");
+		return new XBoxDeviceInfo(serverPostHandler.postToServerWithHandling("info", readySession, ServerFailureException.class));
 	}
 
 }

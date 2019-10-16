@@ -3,6 +3,7 @@ package com.rokuality.core.driver.roku;
 import com.rokuality.core.driver.ServerPostHandler;
 import com.rokuality.core.exceptions.ServerFailureException;
 import com.rokuality.core.httpexecutor.HttpClient;
+import com.rokuality.core.utils.JsonUtils;
 
 import org.json.simple.JSONObject;
 
@@ -23,8 +24,9 @@ public class RokuInfo {
 	 * @return RokuDeviceInfo - Various information about the device under test.
 	 */
 	public RokuDeviceInfo getDeviceInfo() {
-		session.put("action", "device_info");
-		return new RokuDeviceInfo(serverPostHandler.postToServerWithHandling("info", session, ServerFailureException.class));
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "device_info");
+		return new RokuDeviceInfo(serverPostHandler.postToServerWithHandling("info", readySession, ServerFailureException.class));
 	}
 
 }

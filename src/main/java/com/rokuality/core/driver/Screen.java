@@ -30,8 +30,9 @@ public class Screen {
 	 * @throws ScreenException If the device screen fails to capture.
 	 */
 	public File getImage() {
-		session.put("action", "get_screen_image");
-		JSONObject jsonResults = serverPostHandler.postToServerWithHandling("screen", session, ScreenException.class);
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "get_screen_image");
+		JSONObject jsonResults = serverPostHandler.postToServerWithHandling("screen", readySession, ScreenException.class);
 		return new FileToStringUtils().convertToFile(String.valueOf(jsonResults.get("screen_image")),
 				String.valueOf(jsonResults.get("screen_image_extension")));
 	}
@@ -48,12 +49,13 @@ public class Screen {
 	 * @throws ScreenException If the device sub screen fails to capture.
 	 */
 	public File getImage(int subScreenX, int subScreenY, int subScreenWidth, int subScreenHeight) {
-		session.put("action", "get_screen_image");
-		session.put("sub_screen_x", subScreenX);
-		session.put("sub_screen_y", subScreenY);
-		session.put("sub_screen_width", subScreenWidth);
-		session.put("sub_screen_height", subScreenHeight);
-		JSONObject jsonResults = serverPostHandler.postToServerWithHandling("screen", session, ScreenException.class);
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "get_screen_image");
+		readySession.put("sub_screen_x", subScreenX);
+		readySession.put("sub_screen_y", subScreenY);
+		readySession.put("sub_screen_width", subScreenWidth);
+		readySession.put("sub_screen_height", subScreenHeight);
+		JSONObject jsonResults = serverPostHandler.postToServerWithHandling("screen", readySession, ScreenException.class);
 		return new FileToStringUtils().convertToFile(String.valueOf(jsonResults.get("screen_image")),
 				String.valueOf(jsonResults.get("screen_image_extension")));
 	}
@@ -65,8 +67,9 @@ public class Screen {
 	 * @throws ScreenException If the device screen text fails to capture.
 	 */
 	public List<ScreenText> getText() {
-		session.put("action", "get_screen_text");
-		JSONObject jsonResults = serverPostHandler.postToServerWithHandling("screen", session, ScreenException.class);
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "get_screen_text");
+		JSONObject jsonResults = serverPostHandler.postToServerWithHandling("screen", readySession, ScreenException.class);
 		return JsonUtils.fromJsonToList(jsonResults.get("screen_text").toString(), ScreenText.class);
 	}
 
@@ -83,12 +86,13 @@ public class Screen {
 	 * @throws ScreenException If the device sub screen text fails to capture.
 	 */
 	public List<ScreenText> getText(int subScreenX, int subScreenY, int subScreenWidth, int subScreenHeight) {
-		session.put("action", "get_screen_text");
-		session.put("sub_screen_x", subScreenX);
-		session.put("sub_screen_y", subScreenY);
-		session.put("sub_screen_width", subScreenWidth);
-		session.put("sub_screen_height", subScreenHeight);
-		JSONObject jsonResults = serverPostHandler.postToServerWithHandling("screen", session, ScreenException.class);
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "get_screen_text");
+		readySession.put("sub_screen_x", subScreenX);
+		readySession.put("sub_screen_y", subScreenY);
+		readySession.put("sub_screen_width", subScreenWidth);
+		readySession.put("sub_screen_height", subScreenHeight);
+		JSONObject jsonResults = serverPostHandler.postToServerWithHandling("screen", readySession, ScreenException.class);
 		return JsonUtils.fromJsonToList(jsonResults.get("screen_text").toString(), ScreenText.class);
 	}
 
@@ -134,8 +138,9 @@ public class Screen {
 	 * @throws ScreenException If the device screen size is not determined.
 	 */
 	public Dimension getSize() {
-		session.put("action", "get_screen_size");
-		JSONObject jsonResults = serverPostHandler.postToServerWithHandling("screen", session, ScreenException.class);
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "get_screen_size");
+		JSONObject jsonResults = serverPostHandler.postToServerWithHandling("screen", readySession, ScreenException.class);
 		Dimension dimension = new Dimension(Integer.parseInt(jsonResults.get("screen_width").toString()),
 				Integer.parseInt(jsonResults.get("screen_height").toString()));
 		return dimension;
@@ -151,8 +156,9 @@ public class Screen {
 	 * @throws ScreenException If the video recording cannot be captured.
 	 */
 	public File getRecording() {
-		session.put("action", "get_screen_recording");
-		JSONObject jsonResults = serverPostHandler.postToServerWithHandling("screen", session, ScreenException.class);
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "get_screen_recording");
+		JSONObject jsonResults = serverPostHandler.postToServerWithHandling("screen", readySession, ScreenException.class);
 		return new FileToStringUtils().convertToFile(String.valueOf(jsonResults.get("screen_video")),
 				String.valueOf(jsonResults.get("screen_video_extension")));
 	}
