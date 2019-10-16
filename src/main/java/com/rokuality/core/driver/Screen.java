@@ -119,7 +119,7 @@ public class Screen {
 	 * @param subScreenWidth int - The subscreen width ending point to capture.
 	 * @param subScreenHeight - int The subscreen height ending point to capture.
 	 * 
-	 * @return String - A complete string of every word found on the screen.
+	 * @return String - A complete string of every word found on the sub screen.
 	 * @throws ScreenException If the device screen text fails to capture.
 	 */
 	public String getTextAsString(int subScreenX, int subScreenY, int subScreenWidth, int subScreenHeight) {

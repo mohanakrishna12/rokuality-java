@@ -23,6 +23,11 @@ public class ScreenText {
     @JsonProperty("confidence")
     private float confidence;
 
+    /**
+	 * Gets the screen text of the word on the device screen.
+	 *
+	 * @return String
+	 */
     public String getText() {
         return text;
     }
