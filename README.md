@@ -7,6 +7,7 @@ Clone/Download and start the [Rokuality Server](https://github.com/rokuality/rok
 
 ### Getting started: Add the bindings to your Project
 To use Rokuality in your tests or application:
+
 MAVEN:
 ```xml
     <dependency>
