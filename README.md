@@ -6,7 +6,8 @@ The Rokuality platform allows you to distribute Roku and XBox end to end tests a
 Clone/Download and start the [Rokuality Server](https://github.com/rokuality/rokuality-server) which acts as a lightweight web server proxy for your test traffic. The server does all the 'heavy lifting' on the backend.
 
 ### Getting started: Add the bindings to your Project
-To use Rokuality in your tests or application, add the `rokuality-java` dependency to your pom:
+To use Rokuality in your tests or application:
+MAVEN:
 ```xml
     <dependency>
         <groupId>com.rokuality</groupId>
@@ -14,6 +15,10 @@ To use Rokuality in your tests or application, add the `rokuality-java` dependen
         <version>1.1.1</version>
         <scope>test</scope>
     </dependency>
+```
+GRADLE:
+```xml
+    implementation 'com.rokuality:rokuality-java:1.1.1'
 ```
 
 ### Getting started: Roku
