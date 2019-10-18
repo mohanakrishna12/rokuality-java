@@ -113,8 +113,8 @@ To send remote button presses to the HDMI/IR device you can do the following:
     
     // send the desired button press to the device
     driver.remote().pressButton("DirectionUp");
-    driverriver.remote().pressButton("Guide");
-    driverriver.remote().pressButton("Select");
+    driver.remote().pressButton("Guide");
+    driver.remote().pressButton("Select");
 ```
 
 #### Getting screen artifacts:
