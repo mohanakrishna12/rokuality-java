@@ -13,6 +13,7 @@ import com.rokuality.core.driver.ScreenText;
 import com.rokuality.core.driver.hdmi.HDMIDriver;
 import com.rokuality.core.exceptions.NoSuchElementException;
 import com.rokuality.core.exceptions.ServerFailureException;
+import com.rokuality.core.exceptions.SessionNotStartedException;
 import com.rokuality.core.utils.SleepUtils;
 
 import org.testng.Assert;
@@ -98,29 +99,29 @@ public class PlaystationTests {
 		playstationDriver = new HDMIDriver(SERVER_URL, caps);
 
 		playstationDriver.options().setElementTimeout(5000);
-		Element element = playstationDriver.finder().findElement(By.Text("Sign in"));
+		Element element = playstationDriver.finder().findElement(By.Text("Playstation store"));
 		System.out.println(element);
 
 		Point elementLocation = element.getLocation();
-		Assert.assertTrue(elementLocation.x > 760 && elementLocation.x < 780);
-		Assert.assertTrue(elementLocation.y > 790 && elementLocation.y < 800);
+		Assert.assertTrue(elementLocation.x > 640 && elementLocation.x < 650);
+		Assert.assertTrue(elementLocation.y > 550 && elementLocation.y < 560);
 
 		Dimension elementSize = element.getSize();
-		Assert.assertTrue(elementSize.width > 75 && elementSize.width < 90);
-		Assert.assertTrue(elementSize.height > 25 && elementSize.height < 35);
+		Assert.assertTrue(elementSize.width > 420 && elementSize.width < 430);
+		Assert.assertTrue(elementSize.height > 50 && elementSize.height < 60);
 
 		String elementText = element.getText();
-		Assert.assertEquals("Sign in", elementText);
+		Assert.assertEquals("PlayStation Store", elementText);
 
 		double confidence = element.getConfidence();
-		Assert.assertTrue(confidence > 70.0);
+		Assert.assertTrue(confidence > 80.0);
 
 		Assert.assertTrue(!element.getElementID().isEmpty());
 		Assert.assertEquals(element.getSessionID(), playstationDriver.getSessionID());
 
 	}
 
-	@Test(groups = { "Playstation", "Debug" })
+	@Test(groups = { "Playstation" })
 	@Features("Playstation")
 	public void findElementFromTextWithGoogleVisionTest() {
 
@@ -213,54 +214,51 @@ public class PlaystationTests {
 		playstationDriver = new HDMIDriver(SERVER_URL, caps);
 		playstationDriver.options().setElementTimeout(15000);
 
-		playstationDriver.finder().findElement(By.Text("amazon"));
+		playstationDriver.finder().findElement(By.Text("Sign in"));
 
 		// get the available remote commands
 		String buttonOptions = playstationDriver.remote().getButtonOptions();
 		System.out.println(buttonOptions);
 
-		playstationDriver.remote().pressButton("DirectionDown");
-		playstationDriver.remote().pressButton("DirectionDown");
-		playstationDriver.remote().pressButton("DirectionDown");
-		playstationDriver.remote().pressButton("DirectionDown");
+		playstationDriver.remote().pressButton("DirectionUp");
+		playstationDriver.finder().findElement(By.Text("Notifications"));
 
-		playstationDriver.finder().findElement(By.Text("More Services"));
-		
 		playstationDriver.remote().pressButton("Circle");
-		playstationDriver.finder().findElement(By.Text("amazon"));
+		playstationDriver.finder().findElement(By.Text("Playstation Store"));
+
 	}
 
-	@Test(groups = { "Roku" })
-	@Features("Roku")
+	@Test(groups = { "Playstation" })
+	@Features("Playstation")
 	public void getScreenTextTesseractTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
 		playstationDriver = new HDMIDriver(SERVER_URL, caps);
 
 		playstationDriver.options().setElementTimeout(5000);
-		playstationDriver.finder().findElement(By.Text("amazon"));
+		playstationDriver.finder().findElement(By.Text("playstation store"));
 
 		List<ScreenText> allScreenText = playstationDriver.screen().getText();
 		boolean matchFound = false;
 		for (ScreenText screenText : allScreenText) {
-			if (screenText.getText().equals("amazon")) {
+			if (screenText.getText().equals("PlayStation")) {
 				matchFound = true;
 
 				System.out.println(screenText);
 		
 				Point textLocation = screenText.getLocation();
-				Assert.assertTrue(textLocation.x > 400 && textLocation.x < 420);
-				Assert.assertTrue(textLocation.y > 750 && textLocation.y < 790);
+				Assert.assertTrue(textLocation.x > 640 && textLocation.x < 650);
+				Assert.assertTrue(textLocation.y > 550 && textLocation.y < 560);
 
 				Dimension textSize = screenText.getSize();
-				Assert.assertTrue(textSize.width > 190 && textSize.width < 220);
-				Assert.assertTrue(textSize.height > 45 && textSize.height < 60);
+				Assert.assertTrue(textSize.width > 285 && textSize.width < 295);
+				Assert.assertTrue(textSize.height > 50 && textSize.height < 60);
 
-				Assert.assertTrue(screenText.getWidth() > 190 && screenText.getWidth() < 220);
-				Assert.assertTrue(screenText.getHeight() > 45 && screenText.getHeight() < 60);
+				Assert.assertTrue(screenText.getWidth() > 285 && screenText.getWidth() < 295);
+				Assert.assertTrue(screenText.getHeight() > 50 && screenText.getHeight() < 60);
 
 				double confidence = screenText.getConfidence();
-				Assert.assertTrue(confidence > 80);
+				Assert.assertTrue(confidence > 85);
 				break;
 			}
 		}
@@ -270,9 +268,9 @@ public class PlaystationTests {
 		Assert.assertFalse(allSubScreenText.isEmpty());
 		Assert.assertTrue(allScreenText.size() != allSubScreenText.size());
 
-		String subScreenTxt = playstationDriver.screen().getTextAsString(1, 1, 500, 500);
-		Assert.assertFalse(subScreenTxt.toLowerCase().contains("amazon"));
-		Assert.assertTrue(playstationDriver.screen().getTextAsString().contains("amazon"));
+		String subScreenTxt = playstationDriver.screen().getTextAsString(1, 1, 400, 400);
+		Assert.assertFalse(subScreenTxt.toLowerCase().contains("playstation"));
+		Assert.assertTrue(playstationDriver.screen().getTextAsString().toLowerCase().contains("playstation"));
 
 	}
 
@@ -313,6 +311,87 @@ public class PlaystationTests {
 		Assert.assertTrue(screenRecording2.exists() && screenRecording2.isFile());
 		Assert.assertFalse(screenRecording.equals(screenRecording2));
 		
+	}
+
+	@Test(groups = { "Playstation" })
+	@Features("Playstation")
+	public void sessionNotStartedMissingRequiredCapsTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.removeCapability("VideoCaptureInput");
+
+		boolean success = false;
+		try {
+			playstationDriver = new HDMIDriver(SERVER_URL, caps);
+		} catch (SessionNotStartedException e) {
+			System.out.println(e.getMessage());
+			success = e.getMessage().contains("VideoCaptureInput");
+		}
+		Assert.assertTrue(success);
+		caps.addCapability("VideoCaptureInput", "someinput");
+
+		success = false;
+		caps.removeCapability("AudioCaptureInput");
+		try {
+			playstationDriver = new HDMIDriver(SERVER_URL, caps);
+		} catch (SessionNotStartedException e) {
+			System.out.println(e.getMessage());
+			success = e.getMessage().contains("AudioCaptureInput");
+		}
+		Assert.assertTrue(success);
+		caps.addCapability("VideoCaptureInput", "someinput");
+
+		success = false;
+		caps.removeCapability("HomeHubIPAddress");
+		try {
+			playstationDriver = new HDMIDriver(SERVER_URL, caps);
+		} catch (SessionNotStartedException e) {
+			System.out.println(e.getMessage());
+			success = e.getMessage().contains("HomeHubIPAddress");
+		}
+		Assert.assertTrue(success);
+		caps.addCapability("HomeHubIPAddress", "someipaddress");
+
+		success = false;
+		caps.removeCapability("DeviceName");
+		try {
+			playstationDriver = new HDMIDriver(SERVER_URL, caps);
+		} catch (SessionNotStartedException e) {
+			System.out.println(e.getMessage());
+			success = e.getMessage().contains("DeviceName");
+		}
+		Assert.assertTrue(success);
+		caps.addCapability("DeviceName", "DeviceName");
+
+	}
+
+	@Test(groups = { "Playstation" })
+	@Features("Playstation")
+	public void sessionNotStartedDeviceNotReachableTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("VideoCaptureInput", "wronginput");
+
+		boolean success = false;
+		try {
+			playstationDriver = new HDMIDriver(SERVER_URL, caps);
+		} catch (SessionNotStartedException e) {
+			System.out.println(e.getMessage());
+			success = e.getMessage().contains("Failed to initiate hdmi driver");
+		}
+		Assert.assertTrue(success);
+		caps.addCapability("VideoCaptureInput", "FHD Webcamera");
+
+		success = false;
+		caps.addCapability("HomeHubIPAddress", "1.1.1.1");
+		try {
+			playstationDriver = new HDMIDriver(SERVER_URL, caps);
+		} catch (SessionNotStartedException e) {
+			System.out.println(e.getMessage());
+			success = e.getMessage().contains("The logitech harmony device");
+		}
+		Assert.assertTrue(success);
+
 	}
 
 }
