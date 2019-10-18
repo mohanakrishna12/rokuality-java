@@ -54,14 +54,11 @@ public class PlaystationTests {
 
 		DeviceCapabilities capabilities = new DeviceCapabilities();
 
-		// Indicates we want a Roku test session
+		// Indicates we want an HDMI capture card connected test session
 		capabilities.addCapability("Platform", "HDMI");
 
 		// OCR module - Options are 'Tesseract' or 'GoogleVision'
 		capabilities.addCapability("OCRType", "Tesseract");
-
-		// TODO - NOT NEEDED FOR HDMI DRIVERS
-		capabilities.addCapability("DeviceIPAddress", "192.168.1.38");
 
 		// The ip address of your harmony
 		capabilities.addCapability("HomeHubIPAddress", "192.168.1.41");
@@ -69,22 +66,15 @@ public class PlaystationTests {
 		// The name of your device as saved in harmony
 		capabilities.addCapability("DeviceName", "Playstation4");
 
-		// ~/Rokuality/dependencies/ffmpeg_v4.1 -f avfoundation -list_devices true -i ""
+		// The video input and audio input names of your attached capture card. They can be found by running
+		// the following commands:
+		// MAC: ~/Rokuality/dependencies/ffmpeg_v4.1 -f avfoundation -list_devices true -i ""
+		// WINDOWS: ~\Rokuality\dependencies\ffmpeg_win_v4.1\bin\ffmpeg.exe -list_devices true -f dshow -i dummy
 		capabilities.addCapability("VideoCaptureInput", "FHD Webcamera");
 		capabilities.addCapability("AudioCaptureInput", "FHD Webcamera");
 
 		// OPTIONAL A base image match similarity tolerance between 0 and 1
 		capabilities.addCapability("ImageMatchSimilarity", .89);
-
-		// OPTIONAL A forced image resolution size that all image captures are resized
-		// to (width/height).
-		// capabilities.addCapability("ScreenSizeOverride", "1280x820");
-
-		// OPTIONAL - enforce ocr case sensitivity. If not provided all words during ocr
-		// evaluation are forced to lowercase
-		// for better success chances. To enforce case sensitivity set to true; defaults
-		// to false;
-		capabilities.addCapability("OCRCaseSensitive", true); // TODO - implement in server
 
 		return capabilities;
 	}
