@@ -32,6 +32,13 @@ public class HDMIRemote {
 		serverPostHandler.postToServerWithHandling("remote", readySession, RemoteInteractException.class);
 	}
 
+	/**
+	 * Gets all the available remote control button options that can be sent to the device.
+	 *
+	 * @return String - All available button commands.
+	 * 
+	 * @throws RemoteInteractException If the remote button could not be pressed.
+	 */
 	public String getButtonOptions() {
 		JSONObject readySession = JsonUtils.deepCopy(session);
 		readySession.put("action", "get_buttons");
