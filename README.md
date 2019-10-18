@@ -240,7 +240,7 @@ Various capabilities and values can be provided and passed to your driver instan
 | ------------- | ------------- | ------------- | ------------- |
 | Platform | Indicates the target platform for the tests.  | Required | String - Options are 'Roku, 'XBox', or 'HDMI' |
 | AppPackage | The sideloadable zip to be installed (Roku), or the .appxbundle (XBox). Must be a valid file path OR a valid url.  | Required for Roku and XBox - IF the 'App' capability is not provided. Ignored for HDMI devices | String |
-| App | The friendly id of your app for Roku and XBox. For Roku, if you provide this cap and ommit the 'AppPackage' cap then the device will attempt to launch an already sideloaded .zip. For XBox this MUST be app id of your installed .appxbundle - if you ommit the 'AppPackage' cap then the device will attempt to launch an already installed app matching this id. | | Roku = Optional, XBox = Required, HDMI = Ignored |
+| App | The friendly id of your app for Roku and XBox. For Roku, if you provide this cap and ommit the 'AppPackage' cap then the device will attempt to launch an already sideloaded .zip. For XBox this MUST be app id of your installed .appxbundle - if you ommit the 'AppPackage' cap then the device will attempt to launch an already installed app matching this id. |Roku = Optional, XBox = Required, HDMI = Ignored |  |
 | DeviceIPAddress | The ip address of your Roku or XBox  | Required | Your device MUST be reachable from the machine running the Rokuality server. |
 | DeviceUsername | The dev console username created when you enabled developer mode on your device  | Required - Roku Only | String |
 | DevicePassword | The dev console password created when you enabled developer mode on your device   | Required - Roku Only | String |
