@@ -81,12 +81,6 @@ public class RokuTests {
 		// to (width/height).
 		capabilities.addCapability("ScreenSizeOverride", "1280x820");
 
-		// OPTIONAL - enforce ocr case sensitivity. If not provided all words during ocr
-		// evaluation are forced to lowercase
-		// for better success chances. To enforce case sensitivity set to true; defaults
-		// to false;
-		capabilities.addCapability("OCRCaseSensitive", true); // TODO - implement in server
-
 		return capabilities;
 	}
 
