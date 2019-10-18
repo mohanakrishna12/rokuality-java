@@ -208,6 +208,7 @@ public class PlaystationTests {
 
 		// get the available remote commands
 		String buttonOptions = playstationDriver.remote().getButtonOptions();
+		Assert.assertFalse(buttonOptions.isEmpty());
 		System.out.println(buttonOptions);
 
 		playstationDriver.remote().pressButton("DirectionUp");
