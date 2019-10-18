@@ -104,17 +104,17 @@ All remote commands are available. See [roku remote command](https://github.com/
     rokuDriver.remote().sendKeys("typing out hello world on a search screen");
 ```
 
-#### Sending remote control commands to the device - HDMI Devices:
+#### Sending remote control commands to the device - HDMI Devices (Playstation, Cable SetTop, AndroidTV, AppleTV, and more):
 To send remote button presses to the HDMI/IR device you can do the following:
 ```java
     // get a list of available remote commands for your device
     String buttonOptions = driver.remote().getButtonOptions();
-	System.out.println(buttonOptions);
+    System.out.println(buttonOptions);
     
     // send the desired button press to the device
     driver.remote().pressButton("DirectionUp");
-    playstationDriver.remote().pressButton("Guide");
-    playstationDriver.remote().pressButton("Select");
+    driverriver.remote().pressButton("Guide");
+    driverriver.remote().pressButton("Select");
 ```
 
 #### Getting screen artifacts:
@@ -208,7 +208,7 @@ Various capabilities and values can be provided and passed to your driver instan
     XBoxDriver xboxDriver = new XBoxDriver("http://urltoyourrunningserver:port, capabilities);
 ```
 
-#### HDMI Devices (Playstation, Cable SetTop, AndroidTV, AppleTV)
+#### HDMI Devices (Playstation, Cable SetTop, AndroidTV, AppleTV, and more)
 ```java
     // Declare a new DeviceCapability object
     DeviceCapabilities capabilities = new DeviceCapabilities();
