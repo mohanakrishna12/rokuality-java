@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import com.rokuality.core.exceptions.NotAuthorizedException;
 import com.rokuality.core.exceptions.ServerFailureException;
 
 public class HttpClient {
@@ -32,7 +33,8 @@ public class HttpClient {
 
         HttpURLConnection con = null;
         try {
-            con = (HttpURLConnection) new URL(serverURL + "/" + servletName).openConnection();
+            String constructedURL = constructUrl(serverURL, servletName);
+            con = (HttpURLConnection) new URL(constructedURL).openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; utf-8");
             con.setRequestProperty("Accept", "application/json");
@@ -50,7 +52,7 @@ public class HttpClient {
             responseCode = con.getResponseCode();
 
             InputStreamReader inputStreamReader = null;
-            if (responseCode == 200) {
+            if (responseCode >= 200 && responseCode < 400) {
                 inputStreamReader = new InputStreamReader(con.getInputStream(), "utf-8");
             } else {
                 inputStreamReader = new InputStreamReader(con.getErrorStream(), "utf-8");
@@ -79,11 +81,15 @@ public class HttpClient {
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonResponseObj = null;
 
+        if (responseCode == 401) {
+            throw new NotAuthorizedException(String.valueOf(responseContent));
+        }
+
         if (responseContent != null) {
             try {
                 jsonResponseObj = (JSONObject) jsonParser.parse(responseContent);
             } catch (ParseException e) {
-                e.printStackTrace();
+                System.out.println(String.format("Response content %s is not valid json!", responseContent));
             }
         }
 
@@ -98,6 +104,21 @@ public class HttpClient {
         }
 
         return jsonResponseObj;
+    }
+
+    private String constructUrl(String serverURL, String servletName) {
+        String finalizedURL = null;
+
+        String baseURL = serverURL;
+        String queryString = "";
+        if (serverURL.contains("?")) {
+            String[] urlComps = serverURL.split("\\?");
+            baseURL = urlComps[0];
+            queryString = urlComps[1];
+        }
+
+        finalizedURL = baseURL + "/" + servletName + "?" + queryString;
+        return finalizedURL;
     }
 
 }
