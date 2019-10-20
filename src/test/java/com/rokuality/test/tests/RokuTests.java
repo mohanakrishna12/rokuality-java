@@ -16,9 +16,10 @@ import com.rokuality.core.enums.RokuButton;
 import com.rokuality.core.exceptions.NoSuchElementException;
 import com.rokuality.core.exceptions.ServerFailureException;
 import com.rokuality.core.exceptions.SessionNotStartedException;
-import com.rokuality.core.utils.SleepUtils;
 
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import junit.framework.Assert;
 import ru.yandex.qatools.allure.annotations.Features;
@@ -67,7 +68,7 @@ public class RokuTests {
 		capabilities.addCapability("AppPackage", "https://rokualitypublic.s3.amazonaws.com/RokualityDemoApp.zip");
 
 		// Your Roku device ip address.
-		capabilities.addCapability("DeviceIPAddress", "192.168.1.38");
+		capabilities.addCapability("DeviceIPAddress", "192.168.1.42");
 
 		// Your Roku device username and password as created during your device
 		// developer setup.
@@ -500,8 +501,9 @@ public class RokuTests {
 		File screenRecording = rokuDriver.screen().getRecording();
 		System.out.println("Screen recording saved to: " + screenRecording.getAbsolutePath());
 		Assert.assertTrue(screenRecording.exists() && screenRecording.isFile());
-		SleepUtils.sleep(2000);
+		
 		File screenRecording2 = rokuDriver.screen().getRecording();
+		System.out.println("Screen recording saved to: " + screenRecording2.getAbsolutePath());
 		Assert.assertTrue(screenRecording2.exists() && screenRecording2.isFile());
 		Assert.assertFalse(screenRecording.equals(screenRecording2));
 

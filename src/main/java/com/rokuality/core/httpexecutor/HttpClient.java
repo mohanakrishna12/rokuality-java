@@ -1,9 +1,5 @@
 package com.rokuality.core.httpexecutor;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -13,9 +9,14 @@ import java.net.URL;
 import com.rokuality.core.exceptions.NotAuthorizedException;
 import com.rokuality.core.exceptions.ServerFailureException;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 public class HttpClient {
 
     private static final int DEFAULT_TIMEOUT = 90;
+    private static final String RESULTS = "results";
 
     private String serverURL = null;
 
@@ -81,10 +82,6 @@ public class HttpClient {
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonResponseObj = null;
 
-        if (responseCode == 401) {
-            throw new NotAuthorizedException(String.valueOf(responseContent));
-        }
-
         if (responseContent != null) {
             try {
                 jsonResponseObj = (JSONObject) jsonParser.parse(responseContent);
@@ -93,12 +90,16 @@ public class HttpClient {
             }
         }
 
+        if (responseCode == 401 && jsonResponseObj != null && jsonResponseObj.containsKey(RESULTS)) {
+            throw new NotAuthorizedException(String.valueOf(jsonResponseObj.get(RESULTS)));
+        }
+
         if (responseCode != 200 && jsonResponseObj == null) {
             throw new ServerFailureException(String.format(
                     "The server failed to respond at %s. Is the server listening at this location?", String.valueOf(serverURL)));
         }
 
-        if (responseCode != 200 && jsonResponseObj != null && !jsonResponseObj.containsKey("results")) {
+        if (responseCode != 200 && jsonResponseObj != null && !jsonResponseObj.containsKey(RESULTS)) {
             throw new ServerFailureException(String.format(
                     "The server responded at %s with an unknown error!", String.valueOf(serverURL)));
         }
@@ -114,10 +115,12 @@ public class HttpClient {
         if (serverURL.contains("?")) {
             String[] urlComps = serverURL.split("\\?");
             baseURL = urlComps[0];
-            queryString = urlComps[1];
+            if (urlComps.length >= 2) {
+                queryString = "?" + urlComps[1];
+            }
         }
 
-        finalizedURL = baseURL + "/" + servletName + "?" + queryString;
+        finalizedURL = baseURL + "/" + servletName + queryString;
         return finalizedURL;
     }
 
