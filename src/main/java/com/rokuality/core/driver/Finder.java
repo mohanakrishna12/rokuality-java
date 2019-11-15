@@ -1,6 +1,9 @@
 package com.rokuality.core.driver;
 
+import java.util.List;
+
 import com.rokuality.core.exceptions.NoSuchElementException;
+import com.rokuality.core.exceptions.ServerFailureException;
 import com.rokuality.core.httpexecutor.HttpClient;
 import com.rokuality.core.utils.FileToStringUtils;
 import com.rokuality.core.utils.JsonUtils;
@@ -56,6 +59,28 @@ public class Finder {
 		readySession.put("sub_screen_width", subScreenWidth);
 		readySession.put("sub_screen_height", subScreenHeight);
 		return new Element(serverPostHandler.postToServerWithHandling("element", readySession, NoSuchElementException.class));
+	}
+
+	/**
+	 * Searches for the existence of a locator within the device screen
+	 * and will return ALL matches. Unlike the 'findElement' method, this method
+	 * will NOT throw a NoSuchElementException if the locator is not found on the device screen.
+	 * In the event the locator is not found, then an empty list will be returned.
+	 * 
+	 * This method can be used to determine IF a locator is present on screen via
+	 * driver.finder().findElements(By.Text("locator text")).size() > 0;
+	 *
+	 * @param by By - The locator to search for.
+	 * @return Element - List<Element> An Element list containing details about the matching elements location and contents.
+	 * @throws ServerFailureException If an error occurs during element evaluation.
+	 */
+	public List<Element> findElements(By by) {
+		by = new FileToStringUtils().prepareLocator(by);
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "find_all");
+		readySession.put("element_locator", by.toString());
+		JSONObject elementsObj = serverPostHandler.postToServerWithHandling("element", readySession, ServerFailureException.class);
+		return JsonUtils.getElementsList(elementsObj);
 	}
 
 }
