@@ -862,7 +862,6 @@ public class RokuTests {
 
 		DeviceCapabilities caps = setBaseCapabilities();
 		caps.addCapability("OCRType", "GoogleVision");
-		caps.addCapability("MirrorScreen", "1200x800");
 		caps.addCapability("GoogleCredentials", System.getProperty("user.home") + File.separator + "Service.json");
 
 		rokuDriver = new RokuDriver(SERVER_URL, caps);

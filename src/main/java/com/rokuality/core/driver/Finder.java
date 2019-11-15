@@ -67,11 +67,11 @@ public class Finder {
 	 * will NOT throw a NoSuchElementException if the locator is not found on the device screen.
 	 * In the event the locator is not found, then an empty list will be returned.
 	 * 
-	 * This method can be used to determine IF a locator is present on screen via
-	 * driver.finder().findElements(By.Text("locator text")).size() > 0;
+	 * This method can be used to determine IF a locator is present on screen by
+	 * evaluating the size of the returned collection.
 	 *
 	 * @param by By - The locator to search for.
-	 * @return Element - List<Element> An Element list containing details about the matching elements location and contents.
+	 * @return Element - An Element list containing details about the matching elements location and contents.
 	 * @throws ServerFailureException If an error occurs during element evaluation.
 	 */
 	public List<Element> findElements(By by) {
