@@ -325,6 +325,7 @@ public class XBoxTests {
 		xboxDriver.finder().findElement(By.Text("featured"));
 
 		List<ScreenText> allScreenText = xboxDriver.screen().getText();
+		
 		boolean matchFound = false;
 		for (ScreenText screenText : allScreenText) {
 			if (screenText.getText().equals("Featured")) {
@@ -488,6 +489,72 @@ public class XBoxTests {
 			Assert.assertTrue(e.getMessage().contains("The provided app package is not valid"));
 		}
 		Assert.assertTrue(success);
+
+	}
+
+	@Test(groups = { "XBox" })
+	@Features("XBox")
+	public void multiElementMatchFindTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("OCRType", "GoogleVision");
+		caps.addCapability("GoogleCredentials", System.getProperty("user.home") + File.separator + "Service.json");
+
+		xboxDriver = new XBoxDriver(SERVER_URL, caps);
+
+		xboxDriver.options().setElementTimeout(15000);
+		xboxDriver.finder().findElement(By.Text("featured"));
+
+		xboxDriver.remote().pressButton(XBoxButton.UP_ARROW);
+		xboxDriver.remote().pressButton(XBoxButton.RIGHT_ARROW);
+		xboxDriver.remote().pressButton(XBoxButton.RIGHT_ARROW);
+		xboxDriver.remote().pressButton(XBoxButton.RIGHT_ARROW);
+		xboxDriver.remote().pressButton(XBoxButton.A);
+
+		List<Element> elements = xboxDriver.finder().findElements(By.Text("sign in"));
+		Assert.assertEquals(2, elements.size());
+
+		Element elementMatch1 = elements.get(0);
+		System.out.println(elementMatch1.toString());
+		Assert.assertEquals("sign in", elementMatch1.getText());
+		Point elementMatch1Location = elementMatch1.getLocation();
+		Dimension elementMatch1Size = elementMatch1.getSize();
+		Assert.assertTrue(elementMatch1Location.x > 970 && elementMatch1Location.x < 980);
+		Assert.assertTrue(elementMatch1Location.y > 300 && elementMatch1Location.y < 320);
+		Assert.assertTrue(elementMatch1Size.width > 60 && elementMatch1Size.width < 70);
+		Assert.assertTrue(elementMatch1Size.height > 20 && elementMatch1Size.height < 30);
+
+		Element elementMatch2 = elements.get(1);
+		System.out.println(elementMatch2.toString());
+		Assert.assertEquals("Sign In", elementMatch2.getText());
+		Point elementMatch2Location = elementMatch2.getLocation();
+		Dimension elementMatch2Size = elementMatch2.getSize();
+		Assert.assertTrue(elementMatch2Location.x > 690 && elementMatch2Location.x < 705);
+		Assert.assertTrue(elementMatch2Location.y > 420 && elementMatch2Location.y < 430);
+		Assert.assertTrue(elementMatch2Size.width > 50 && elementMatch2Size.width < 65);
+		Assert.assertTrue(elementMatch2Size.height > 10 && elementMatch2Size.height < 25);
+
+	}
+
+	@Test(groups = { "XBox" })
+	@Features("XBox")
+	public void isElementPresentTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("OCRType", "GoogleVision");
+		caps.addCapability("GoogleCredentials", System.getProperty("user.home") + File.separator + "Service.json");
+
+		xboxDriver = new XBoxDriver(SERVER_URL, caps);
+
+		xboxDriver.options().setElementTimeout(15000);
+		xboxDriver.finder().findElement(By.Text("featured"));
+
+		boolean elementPresent = xboxDriver.finder().findElements(By.Text("featured")).size() > 0;
+		Assert.assertTrue(elementPresent);
+
+		xboxDriver.options().setElementTimeout(0);
+		elementPresent = xboxDriver.finder().findElements(By.Text("no such element")).size() > 0;
+		Assert.assertFalse(elementPresent);
 
 	}
 

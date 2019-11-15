@@ -16,9 +16,10 @@ import com.rokuality.core.enums.RokuButton;
 import com.rokuality.core.exceptions.NoSuchElementException;
 import com.rokuality.core.exceptions.ServerFailureException;
 import com.rokuality.core.exceptions.SessionNotStartedException;
-import com.rokuality.core.utils.SleepUtils;
 
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import junit.framework.Assert;
 import ru.yandex.qatools.allure.annotations.Features;
@@ -37,7 +38,7 @@ public class RokuTests {
 	private RokuDriver rokuDriver = null;
 
 	@BeforeMethod(alwaysRun = true)
-	public synchronized void beforeTest() {
+	public void beforeTest() {
 
 	}
 
@@ -67,7 +68,7 @@ public class RokuTests {
 		capabilities.addCapability("AppPackage", "https://rokualitypublic.s3.amazonaws.com/RokualityDemoApp.zip");
 
 		// Your Roku device ip address.
-		capabilities.addCapability("DeviceIPAddress", "192.168.1.38");
+		capabilities.addCapability("DeviceIPAddress", "192.168.1.43");
 
 		// Your Roku device username and password as created during your device
 		// developer setup.
@@ -500,8 +501,9 @@ public class RokuTests {
 		File screenRecording = rokuDriver.screen().getRecording();
 		System.out.println("Screen recording saved to: " + screenRecording.getAbsolutePath());
 		Assert.assertTrue(screenRecording.exists() && screenRecording.isFile());
-		SleepUtils.sleep(2000);
+		
 		File screenRecording2 = rokuDriver.screen().getRecording();
+		System.out.println("Screen recording saved to: " + screenRecording2.getAbsolutePath());
 		Assert.assertTrue(screenRecording2.exists() && screenRecording2.isFile());
 		Assert.assertFalse(screenRecording.equals(screenRecording2));
 
@@ -692,7 +694,8 @@ public class RokuTests {
 			rokuDriver.finder().findElement(By.Text("session not active"));
 		} catch (NoSuchElementException e) {
 			success = true;
-			Assert.assertTrue(e.getMessage().contains("No session found"));
+			System.out.print(e.getMessage());
+			Assert.assertTrue(e.getMessage().contains("No active session found"));
 		}
 		Assert.assertTrue(success);
 
@@ -785,6 +788,92 @@ public class RokuTests {
 			Assert.assertTrue(e.getMessage().contains("Failed to decode Google API credentials!"));
 		}
 		Assert.assertTrue(success);
+
+	}
+
+	@Test(groups = { "Roku" })
+	@Features("Roku")
+	public void findMultipleTextElementsTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("OCRType", "GoogleVision");
+		caps.addCapability("GoogleCredentials", System.getProperty("user.home") + File.separator + "Service.json");
+
+		rokuDriver = new RokuDriver(SERVER_URL, caps);
+
+		rokuDriver.options().setElementTimeout(5000);
+		rokuDriver.finder().findElement(By.Text("SHOWS"));
+		
+		rokuDriver.remote().pressButton(RokuButton.OPTION);
+		rokuDriver.finder().findElement(By.Text("SETTINGS"));
+		rokuDriver.remote().pressButton(RokuButton.RIGHT_ARROW);
+		rokuDriver.remote().pressButton(RokuButton.SELECT);
+
+		List<Element> elements = rokuDriver.finder().findElements(By.Text("Sign in"));
+		Assert.assertEquals(2, elements.size());
+
+		Element elementMatch1 = elements.get(0);
+		System.out.println(elementMatch1.toString());
+		Assert.assertEquals("Sign in", elementMatch1.getText());
+		Point elementMatch1Location = elementMatch1.getLocation();
+		Dimension elementMatch1Size = elementMatch1.getSize();
+		Assert.assertTrue(elementMatch1Location.x > 360 && elementMatch1Location.x < 370);
+		Assert.assertTrue(elementMatch1Location.y > 470 && elementMatch1Location.y < 480);
+		Assert.assertTrue(elementMatch1Size.width > 35 && elementMatch1Size.width < 45);
+		Assert.assertTrue(elementMatch1Size.height > 10 && elementMatch1Size.height < 20);
+
+		Element elementMatch2 = elements.get(1);
+		System.out.println(elementMatch2.toString());
+		Assert.assertEquals("SIGN IN", elementMatch2.getText());
+		Point elementMatch2Location = elementMatch2.getLocation();
+		Dimension elementMatch2Size = elementMatch2.getSize();
+		Assert.assertTrue(elementMatch2Location.x > 200 && elementMatch2Location.x < 220);
+		Assert.assertTrue(elementMatch2Location.y > 540 && elementMatch2Location.y < 560);
+		Assert.assertTrue(elementMatch2Size.width > 35 && elementMatch2Size.width < 45);
+		Assert.assertTrue(elementMatch2Size.height > 10 && elementMatch2Size.height < 20);
+
+	}
+
+	@Test(groups = { "Roku" })
+	@Features("Roku")
+	public void isElementPresentTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("OCRType", "GoogleVision");
+		caps.addCapability("GoogleCredentials", System.getProperty("user.home") + File.separator + "Service.json");
+
+		rokuDriver = new RokuDriver(SERVER_URL, caps);
+
+		rokuDriver.options().setElementTimeout(5000);
+		rokuDriver.finder().findElement(By.Text("SHOWS"));
+		
+		rokuDriver.remote().pressButton(RokuButton.OPTION);
+		boolean elementPresent = rokuDriver.finder().findElements(By.Text("SETTINGS")).size() > 0;
+		Assert.assertTrue(elementPresent);
+
+		elementPresent = rokuDriver.finder().findElements(By.Text("no such element")).size() > 0;
+		Assert.assertFalse(elementPresent);
+
+	}
+
+	@Test(groups = { "Roku" })
+	@Features("Roku")
+	public void findMultipleImageElementsTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("OCRType", "GoogleVision");
+		caps.addCapability("GoogleCredentials", System.getProperty("user.home") + File.separator + "Service.json");
+
+		rokuDriver = new RokuDriver(SERVER_URL, caps);
+
+		rokuDriver.options().setElementTimeout(5000);
+		rokuDriver.finder().findElement(By.Text("SHOWS"));
+		rokuDriver.remote().pressButton(RokuButton.DOWN_ARROW);
+		rokuDriver.remote().pressButton(RokuButton.DOWN_ARROW);
+
+		rokuDriver.finder().findElement(By.Text("SEARCH"));
+		List<Element> elements = rokuDriver.finder().findElements(By.Image(ROKU_IMAGES_DIR.getAbsolutePath() + File.separator + "multimatch.png"));
+		Assert.assertTrue(elements.size() > 0);
 
 	}
 

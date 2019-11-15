@@ -13,13 +13,13 @@ MAVEN:
     <dependency>
         <groupId>com.rokuality</groupId>
         <artifactId>rokuality-java</artifactId>
-        <version>1.2.0</version>
+        <version>1.2.1</version>
         <scope>test</scope>
     </dependency>
 ```
 GRADLE:
 ```xml
-    implementation 'com.rokuality:rokuality-java:1.2.0'
+    implementation 'com.rokuality:rokuality-java:1.2.1'
 ```
 
 ### Getting started: Roku
@@ -70,6 +70,17 @@ OR
     driver.finder().findElement(By.Image("http://urltoyourimagesnippet.png"));
 ```
 In this example, you can provide a url to your locator image snippet and the server will download that image and evaluate it against the device screen. Useful for those more dynamic testing situations where you may want to query your application feeds to get the dynamic app images for evaluation, or if you want to keep your image based locators in a remote repository.
+
+#### Finding multi match elements:
+You can search for multiple element matches from a singular locator and return the results of match to an Element collection as follows:
+```java
+    List<Element> elements = driver.finder().findElements(By.Text("locator that will have multiple matches"));
+```
+When using `findElements`, a NoSuchElementException will NOT be thrown to the user in the event that an element is not found. In that event the collection will be empty. So this method can be used to determine if an element is present in the following fashion:
+
+```java
+    boolean elementPresent = driver.finder().findElements(By.Text("locator")).size() > 0;
+```
 
 #### Elements as objects:
 A found element can be stored to an object and additional details about it can be retrieved:
@@ -252,6 +263,7 @@ Various capabilities and values can be provided and passed to your driver instan
 | DeviceName | The name of your device as saved in your Harmony hub i.e. 'MyXBoxOne', or 'MyPlaystation4'. | Required for XBox and HDMI. Ignored for Roku | String |
 | VideoCaptureInput | The name of your video card capture video input if running an HDMI connected test. Will vary by the type of hdmi capture card. | Required for HDMI device types (Playstation, Cable SetTop Box, AndroidTV, AppleTV, etc. Ignored for Roku or XBox | Can be found by running a terminal command. For MAC: `~/Rokuality/dependencies/ffmpeg_v4.1 -f avfoundation -list_devices true -i ""` and for Windows: `~\Rokuality\dependencies\ffmpeg_win_v4.1\bin\ffmpeg.exe -list_devices true -f dshow -i dummy` |
 | AudioCaptureInput | The name of your video card capture audio input if running an HDMI connected test. Will vary by the type of hdmi capture card. | Required for HDMI device types (Playstation, Cable SetTop Box, AndroidTV, AppleTV, etc. Ignored for Roku or XBox | Can be found by running a terminal command. For MAC: `~/Rokuality/dependencies/ffmpeg_v4.1 -f avfoundation -list_devices true -i ""` and for Windows: `~\Rokuality\dependencies\ffmpeg_win_v4.1\bin\ffmpeg.exe -list_devices true -f dshow -i dummy` |
+| MirrorScreen | If provided with a widthxheight value, then a window will be launched on the user's desktop showing the test activity in real time for the duration of the test session. Useful for debugging tests on remote devices.  | Optional | String - 'widthxheight' format. i.e. '1200x800' will launch a screen mirror with width 1200, and height 800. |
 
 #### Element Timeouts and Polling:
 There are two main options when it comes to element timeouts and polling

@@ -1,3 +1,6 @@
+1.2.1 - Changes from 1.2.0
+1. Adds support for multiple element finds via driver.finder().findElements(). See the readme documentation for details.
+
 1.2.0 - Changes from 1.1.1
 1. Adds support for any HDMI input device with Bluetooth/IR control.
 

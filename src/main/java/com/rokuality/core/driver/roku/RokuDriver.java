@@ -9,6 +9,7 @@ import com.rokuality.core.driver.ServerPostHandler;
 import com.rokuality.core.exceptions.ServerFailureException;
 import com.rokuality.core.exceptions.SessionNotStartedException;
 import com.rokuality.core.httpexecutor.HttpClient;
+import com.rokuality.core.utils.JsonUtils;
 
 import org.json.simple.JSONObject;
 
@@ -43,10 +44,10 @@ public class RokuDriver extends BaseDriver {
 	 * @throws ServerFailureException If a session could not be properly torn down for any reason.
 	 */
 	public void stop() {
-		JSONObject json = super.getSession();
-		json.put("action", "stop");
+		JSONObject readySession = JsonUtils.deepCopy(super.getSession());
+		readySession.put("action", "stop");
 		if (super.getSession() != null) {
-			serverPostHandler.postToServerWithHandling("session", json, ServerFailureException.class);
+			serverPostHandler.postToServerWithHandling("session", readySession, ServerFailureException.class);
 		}
 	}
 

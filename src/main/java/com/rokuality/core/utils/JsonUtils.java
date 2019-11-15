@@ -6,16 +6,21 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.rokuality.core.driver.Element;
 import com.rokuality.core.exceptions.ServerFailureException;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public class JsonUtils {
 
     private static ObjectMapper mapper;
@@ -107,5 +112,19 @@ public class JsonUtils {
 		}
 		
 		return deepCopyJSON;
-	}
+    }
+    
+    public static List<Element> getElementsList(JSONObject elementsObj) {
+        if (!elementsObj.containsKey("all_elements")) {
+			return new ArrayList<>();
+		}
+		JSONArray allEleArr = (JSONArray) elementsObj.get("all_elements");
+		List<Element> elements = new ArrayList<>();
+		Iterator<JSONObject> iterator = allEleArr.iterator();
+        while (iterator.hasNext()) {
+			elements.add(new Element(iterator.next()));
+		}
+
+		return elements;
+    }
 }
