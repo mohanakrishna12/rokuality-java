@@ -20,7 +20,6 @@ import com.rokuality.core.exceptions.SessionNotStartedException;
 import org.testng.annotations.*;
 
 import junit.framework.Assert;
-import ru.yandex.qatools.allure.annotations.Features;
 
 public class XBoxTests {
 
@@ -85,7 +84,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void installFromUrlTest() {
 
 		// install app from url
@@ -100,7 +98,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void installFromLocalFileTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -115,7 +112,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void launchAlreadyInstalledApp() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -130,7 +126,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void findElementFromTextWithGoogleVisionTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -163,7 +158,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void findElementFromImageTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -195,7 +189,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" }, expectedExceptions = NoSuchElementException.class)
-	@Features("XBox")
 	public void elementNotFoundInTextTesseractTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -206,7 +199,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" }, expectedExceptions = NoSuchElementException.class)
-	@Features("XBox")
 	public void elementNotFoundInTextGoogleVisionTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -216,7 +208,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" }, expectedExceptions = NoSuchElementException.class)
-	@Features("Xbox")
 	public void elementNotFoundImageTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -227,7 +218,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void elementSetTimeoutTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -251,7 +241,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void findElementInSubScreenTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -277,7 +266,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void remoteControlTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -301,7 +289,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void deviceInfoTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -313,7 +300,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void getScreenTextGoogleVisionTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -359,7 +345,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void getScreenSizeTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -373,7 +358,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void getScreenArtifactsTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -398,7 +382,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void sessionNotStartedInvalidCapsTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -448,7 +431,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void sessionNotStartedDeviceNotReachableTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -465,7 +447,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void sessionNotStartedInstallFailedTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -493,7 +474,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void multiElementMatchFindTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -537,7 +517,6 @@ public class XBoxTests {
 	}
 
 	@Test(groups = { "XBox" })
-	@Features("XBox")
 	public void isElementPresentTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();

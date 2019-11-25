@@ -5,7 +5,7 @@
 
 	<groupId>com.rokuality</groupId>
 	<artifactId>rokuality-java</artifactId>
-	<version>1.2.1</version>
+	<version>1.2.2</version>
 	<packaging>jar</packaging>
 
   	<name>com.rokuality:rokuality-java</name>
@@ -56,9 +56,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<aspectj.version>1.8.10</aspectj.version>
-		<allure.version>1.5.4</allure.version>
-		<jettyVersion>9.3.9.v20160517</jettyVersion>
 	</properties>
 
 	<dependencies>
@@ -67,22 +64,6 @@
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
 			<version>1.1.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>ru.yandex.qatools.allure</groupId>
-			<artifactId>allure-testng-adaptor</artifactId>
-			<version>${allure.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>junit</groupId>
-					<artifactId>junit</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.testng</groupId>
-					<artifactId>testng</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -197,14 +178,7 @@
 				<version>2.19.1</version>
 				<configuration>
 					<testFailureIgnore>true</testFailureIgnore>
-					<argLine>
-						-javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
-					</argLine>
 					<properties>
-						<property>
-							<name>listener</name>
-							<value>com.rokuality.test.listeners.TestListener,com.rokuality.test.listeners.SuiteListener</value>
-						</property>
 						<property>
 							<name>configfailurepolicy</name>
 							<value>continue</value>
@@ -214,13 +188,6 @@
 						<include>**/*.java</include>
 					</includes>
 				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.aspectj</groupId>
-						<artifactId>aspectjweaver</artifactId>
-						<version>${aspectj.version}</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
