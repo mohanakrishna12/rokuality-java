@@ -22,7 +22,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import junit.framework.Assert;
-import ru.yandex.qatools.allure.annotations.Features;
 
 public class RokuTests {
 
@@ -86,7 +85,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void installFromUrlTest() {
 
 		// install app from url
@@ -100,7 +98,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void installFromLocalFileTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -113,7 +110,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void launchAlreadyInstalledApp() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -130,7 +126,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void findElementFromTextWithTesseractTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -162,7 +157,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void findElementFromTextWithGoogleVisionTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -195,7 +189,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void findElementFromImageTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -228,7 +221,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" }, expectedExceptions = NoSuchElementException.class)
-	@Features("Roku")
 	public void elementNotFoundInTextTesseractTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -238,7 +230,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" }, expectedExceptions = NoSuchElementException.class)
-	@Features("Roku")
 	public void elementNotFoundInTextGoogleVisionTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -250,7 +241,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" }, expectedExceptions = NoSuchElementException.class)
-	@Features("Roku")
 	public void elementNotFoundImageTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -261,7 +251,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void elementSetTimeoutTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -285,7 +274,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void elementSetImageMatchSimilarityTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -307,7 +295,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void findElementInSubScreenTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -330,7 +317,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void remoteControlTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -355,7 +341,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void deviceInfoTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -367,7 +352,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void noScreenSizeOverrideCapTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -380,7 +364,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void getScreenTextTesseractTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -426,7 +409,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void getScreenTextGoogleVisionTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -470,7 +452,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void getScreenSizeTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -484,7 +465,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void getScreenArtifactsTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -510,7 +490,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void complicatedWordFindTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -555,7 +534,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void sessionNotStartedInvalidCapsTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -606,7 +584,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void sessionNotStartedDeviceNotReachableTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -623,7 +600,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void sessionNotStartedInstallFailedTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -662,7 +638,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void sendKeysTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -682,7 +657,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void sessionCommandAfterDriverQuitTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -702,7 +676,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void invalidLocatorTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -749,7 +722,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void elementPollIntervalTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -761,7 +733,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void googleVisionInvalidCapsTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -792,7 +763,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void findMultipleTextElementsTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -835,7 +805,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void isElementPresentTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -857,7 +826,6 @@ public class RokuTests {
 	}
 
 	@Test(groups = { "Roku" })
-	@Features("Roku")
 	public void findMultipleImageElementsTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();

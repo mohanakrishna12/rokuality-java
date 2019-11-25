@@ -21,8 +21,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import ru.yandex.qatools.allure.annotations.Features;
-
 public class PlaystationTests {
 
 	private static final File PLAYSTATION_IMAGES_DIR = new File(
@@ -80,7 +78,6 @@ public class PlaystationTests {
 	}
 
 	@Test(groups = { "Playstation" })
-	@Features("Playstation")
 	public void findElementFromTextWithTesseractTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -112,7 +109,6 @@ public class PlaystationTests {
 	}
 
 	@Test(groups = { "Playstation" })
-	@Features("Playstation")
 	public void findElementFromTextWithGoogleVisionTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -142,7 +138,6 @@ public class PlaystationTests {
 	}
 
 	@Test(groups = { "Playstation" })
-	@Features("Playstation")
 	public void findElementFromImageTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -174,7 +169,6 @@ public class PlaystationTests {
 	}
 
 	@Test(groups = { "Playstation" })
-	@Features("Playstation")
 	public void findElementInSubScreenTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -195,7 +189,6 @@ public class PlaystationTests {
 	}
 
 	@Test(groups = { "Playstation" })
-	@Features("Playstation")
 	public void remoteControlTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -220,7 +213,6 @@ public class PlaystationTests {
 	}
 
 	@Test(groups = { "Playstation" })
-	@Features("Playstation")
 	public void getScreenTextTesseractTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -266,7 +258,6 @@ public class PlaystationTests {
 	}
 
 	@Test(groups = { "Playstation" })
-	@Features("Playstation")
 	public void getScreenSizeTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -280,7 +271,6 @@ public class PlaystationTests {
 	}
 
 	@Test(groups = { "Playstation" })
-	@Features("Playstation")
 	public void getScreenArtifactsTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -305,7 +295,6 @@ public class PlaystationTests {
 	}
 
 	@Test(groups = { "Playstation" })
-	@Features("Playstation")
 	public void sessionNotStartedMissingRequiredCapsTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
@@ -357,7 +346,6 @@ public class PlaystationTests {
 	}
 
 	@Test(groups = { "Playstation" })
-	@Features("Playstation")
 	public void sessionNotStartedDeviceNotReachableTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
