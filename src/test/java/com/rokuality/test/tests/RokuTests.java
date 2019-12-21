@@ -845,4 +845,22 @@ public class RokuTests {
 
 	}
 
+	@Test(groups = { "Roku" })
+	public void findElementWithHDMICaptureTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("OCRType", "GoogleVision");
+		caps.addCapability("GoogleCredentials", System.getProperty("user.home") + File.separator + "Service.json");
+
+		caps.addCapability("VideoCaptureInput", "USB Capture HDMI");
+		caps.addCapability("AudioCaptureInput", "USB Capture HDMI");
+
+		rokuDriver = new RokuDriver(SERVER_URL, caps);
+
+		rokuDriver.options().setElementTimeout(10000);
+		Element element = rokuDriver.finder().findElement(By.Text("SHOWS"));
+		System.out.println(element);
+
+	}
+
 }
