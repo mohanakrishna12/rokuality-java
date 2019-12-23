@@ -15,8 +15,8 @@ import org.json.simple.JSONObject;
 @SuppressWarnings("unchecked")
 public class Screen {
 
-	JSONObject session = null;
-	private ServerPostHandler serverPostHandler = null;
+	protected JSONObject session = null;
+	protected ServerPostHandler serverPostHandler = null;
 	
 	public Screen(HttpClient httpClient, JSONObject session) {
 		this.session = session;

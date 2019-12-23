@@ -10,8 +10,10 @@ import com.rokuality.core.driver.By;
 import com.rokuality.core.driver.DeviceCapabilities;
 import com.rokuality.core.driver.Element;
 import com.rokuality.core.driver.ScreenText;
+import com.rokuality.core.driver.roku.RokuBy;
 import com.rokuality.core.driver.roku.RokuDeviceInfo;
 import com.rokuality.core.driver.roku.RokuDriver;
+import com.rokuality.core.driver.roku.RokuMediaPlayerInfo;
 import com.rokuality.core.enums.RokuButton;
 import com.rokuality.core.exceptions.NoSuchElementException;
 import com.rokuality.core.exceptions.ServerFailureException;
@@ -29,6 +31,7 @@ public class RokuTests {
 			"src", "test", "resources", "images", "rokuimages") + File.separator);
 	private static final File HELLO_WORLD_ZIP = new File(
 			ROKU_IMAGES_DIR.getParentFile().getParent() + File.separator + "helloworld.zip");
+	private static final String DEBUG_URL_ZIP = "https://rokualitypublic.s3.amazonaws.com/RokuDebug2.zip";
 	private static final File INVALID_PACKAGE_ZIP = new File(
 			ROKU_IMAGES_DIR.getParentFile().getParent() + File.separator + "invalidapppackage.zip");
 
@@ -220,6 +223,36 @@ public class RokuTests {
 
 	}
 
+	@Test(groups = { "Roku" })
+	public void findElementFromWebDriverLocatorsTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("AppPackage", DEBUG_URL_ZIP);
+
+		rokuDriver = new RokuDriver(SERVER_URL, caps);
+
+		rokuDriver.options().setElementTimeout(5000);
+		
+		Element elementByText = rokuDriver.finder().findElement(RokuBy.Text("FEATURED"));
+		System.out.println(elementByText);
+		Assert.assertTrue(elementByText.getElementJSON().toJSONString().contains("FEATURED"));
+
+		Element elementByTag = rokuDriver.finder().findElement(RokuBy.Tag("Label"));
+		System.out.println(elementByTag);
+		Assert.assertEquals(0, elementByTag.getX());
+		Assert.assertEquals(0, elementByTag.getY());
+		Assert.assertEquals(663, elementByTag.getWidth());
+		Assert.assertEquals(77, elementByTag.getHeight());
+
+		Element elementByAttribute = rokuDriver.finder().findElement(RokuBy.Attribute("bounds", "{0, 0, 663, 77}"));
+		System.out.println(elementByAttribute.getElementJSON());
+		Assert.assertEquals(0, elementByAttribute.getX());
+		Assert.assertEquals(0, elementByAttribute.getY());
+		Assert.assertEquals(663, elementByAttribute.getWidth());
+		Assert.assertEquals(77, elementByAttribute.getHeight());
+		
+	}
+
 	@Test(groups = { "Roku" }, expectedExceptions = NoSuchElementException.class)
 	public void elementNotFoundInTextTesseractTest() {
 
@@ -247,6 +280,16 @@ public class RokuTests {
 		rokuDriver = new RokuDriver(SERVER_URL, caps);
 		rokuDriver.finder()
 				.findElement(By.Image(ROKU_IMAGES_DIR.getAbsolutePath() + File.separator + "helloworld.png"));
+
+	}
+
+	@Test(groups = { "Roku" }, expectedExceptions = NoSuchElementException.class)
+	public void elementNotFoundWebDriverTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("AppPackage", DEBUG_URL_ZIP);
+		rokuDriver = new RokuDriver(SERVER_URL, caps);
+		rokuDriver.finder().findElement(RokuBy.Text("not found"));
 
 	}
 
@@ -468,7 +511,11 @@ public class RokuTests {
 	public void getScreenArtifactsTest() {
 
 		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("AppPackage", DEBUG_URL_ZIP);
 		rokuDriver = new RokuDriver(SERVER_URL, caps);
+
+		rokuDriver.options().setElementTimeout(10000);
+		rokuDriver.finder().findElement(By.Text("FEATURED"));
 
 		File screenImage = rokuDriver.screen().getImage();
 		System.out.println("Screen image saved to: " + screenImage.getAbsolutePath());
@@ -486,6 +533,9 @@ public class RokuTests {
 		System.out.println("Screen recording saved to: " + screenRecording2.getAbsolutePath());
 		Assert.assertTrue(screenRecording2.exists() && screenRecording2.isFile());
 		Assert.assertFalse(screenRecording.equals(screenRecording2));
+
+		String xmlSource = rokuDriver.screen().getPageSource();
+		Assert.assertTrue(xmlSource.contains("FEATURED"));
 
 	}
 
@@ -861,6 +911,66 @@ public class RokuTests {
 		Element element = rokuDriver.finder().findElement(By.Text("SHOWS"));
 		System.out.println(element);
 
+	}
+
+	@Test(groups = { "Roku" })
+	public void getActiveElementTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("AppPackage", DEBUG_URL_ZIP);
+
+		rokuDriver = new RokuDriver(SERVER_URL, caps);
+
+		rokuDriver.options().setElementTimeout(15000);
+		
+		Element elementByText = rokuDriver.finder().findElement(RokuBy.Text("VIEW MORE"));
+		System.out.println(elementByText);
+		
+		Element activeElement = rokuDriver.screen().getActiveElement();
+		System.out.println(activeElement);
+		Assert.assertEquals(0, activeElement.getX());
+		Assert.assertEquals(0, activeElement.getY());
+		Assert.assertEquals(312, activeElement.getWidth());
+		Assert.assertEquals(682, activeElement.getHeight());
+		
+	}
+
+	@Test(groups = { "Roku" })
+	public void isWebDriverElementPresent() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("AppPackage", DEBUG_URL_ZIP);
+
+		rokuDriver = new RokuDriver(SERVER_URL, caps);
+
+		rokuDriver.options().setElementTimeout(15000);
+		
+		List<Element> elements = rokuDriver.finder().findElements(RokuBy.Tag("Label"));
+		Assert.assertTrue(elements.size() > 0);
+
+		rokuDriver.options().setElementTimeout(1000);
+		elements = rokuDriver.finder().findElements(RokuBy.Text("no such element"));
+		Assert.assertTrue(elements.size() == 0);
+		
+	}
+
+	@Test(groups = { "Roku" })
+	public void mediaPlayerInfoTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("AppPackage", DEBUG_URL_ZIP);
+
+		rokuDriver = new RokuDriver(SERVER_URL, caps);
+
+		rokuDriver.options().setElementTimeout(15000);
+		rokuDriver.finder().findElement(RokuBy.Text("VIEW MORE"));
+
+		RokuMediaPlayerInfo mediaPlayerInfo = rokuDriver.info().getMediaPlayerInfo();
+		Assert.assertFalse(mediaPlayerInfo.isError());
+		Assert.assertFalse(mediaPlayerInfo.isLive());
+		Assert.assertEquals(mediaPlayerInfo.getState(), "close");
+
+		
 	}
 
 }

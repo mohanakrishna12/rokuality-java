@@ -5,12 +5,14 @@ import java.io.Serializable;
 public abstract class By {
 
 	/**
-	 * Constructs a text based locator to search for within the text on the device screen.
+	 * Constructs a text based locator to search for within the text on the device screen via the indicated OCR capability.
+	 * NOTE - Available for all device types.
 	 *
 	 * @param text - String The text to search for on the device screen, i.e. "hello world"
 	 * 
 	 * @return By - The constructed locator
 	 */
+	
 	public static By Text(String text) {
 		return new ByText(text);
 	}
@@ -19,6 +21,7 @@ public abstract class By {
 	 * Constructs an image based locator to search for within the the device screen. The input
 	 * can be either an absolute file path to a .png file on your machine, OR can be a url
 	 * to a .png
+	 * NOTE - Available for all device types.
 	 *
 	 * @param pathOrUrlToImageSnippetPNG - The path or URL to an image snippet to search for within the device screen.
 	 * 

@@ -6,6 +6,8 @@ import java.awt.Point;
 import java.util.Objects;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class Element {
 
@@ -17,6 +19,7 @@ public class Element {
     private String element_text;
     private String session_id;
     private String element_id;
+    private String element_json;
 
     // TODO - serialize with jackson to remove the super ugly castings
     public Element(JSONObject json) {
@@ -28,6 +31,7 @@ public class Element {
         element_text = (String) json.get("element_text");
         session_id = (String) json.get("session_id");
         element_id = (String) json.get("element_id");
+        element_json = (String) json.get("element_json");
     }
 
     /**
@@ -121,6 +125,17 @@ public class Element {
 	 */
     public float getConfidence() {
         return element_confidence;
+    }
+
+    public JSONObject getElementJSON() {
+        if (element_json != null) {
+            try {
+                return (JSONObject) new JSONParser().parse(element_json);
+            } catch (ParseException e) {
+                return null;
+            }
+        }
+        return null;
     }
 
     @Override
