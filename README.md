@@ -13,17 +13,17 @@ MAVEN:
     <dependency>
         <groupId>com.rokuality</groupId>
         <artifactId>rokuality-java</artifactId>
-        <version>1.2.2</version>
+        <version>1.2.3</version>
         <scope>test</scope>
     </dependency>
 ```
 GRADLE:
 ```xml
-    implementation 'com.rokuality:rokuality-java:1.2.2'
+    implementation 'com.rokuality:rokuality-java:1.2.3'
 ```
 
 ### Getting started: Roku
-See the [Getting Started: Roku](https://github.com/rokuality/rokuality-server) section for details about preparing your Roku device for test.
+See the [Getting Started: Roku](https://github.com/rokuality/rokuality-server) section for details about preparing your Roku device for test. The Rokuality framework is one of the first projects to provide support for the [Roku WebDriver API](https://github.com/rokudev/automated-channel-testing).
 
 ### Getting started: XBox
 See the [Getting Started: XBox](https://github.com/rokuality/rokuality-server) section for details about preparing your XBox device for test.
@@ -33,7 +33,7 @@ See the [Getting Started: HDMI Connected Devices (Playstation, Cable SetTopBox, 
 
 
 ### The Basics:
-The Rokuality bindings operate via Image Based Object Recognition and OCR techniques to identify 'elements' on the device screen and return them to your test scripts as Objects for verification and interaction. The project is modeled after the Selenium/Appium structure so if you've used those toolsets for browsers/mobile devices previously - this framework will look and feel very comfortable to you. See the [Roku example tests](https://github.com/rokuality/rokuality-java/blob/master/src/test/java/com/rokuality/test/tests/RokuTests.java)  or the [XBox example tests](https://github.com/rokuality/rokuality-java/blob/master/src/test/java/com/rokuality/test/tests/XBoxTests.java) or [HDMI example tests](https://github.com/rokuality/rokuality-java/blob/master/src/test/java/com/rokuality/test/tests/PlaystationTests.java) for a full list of samples.
+The Rokuality bindings operate via Image Based Object Recognition and OCR techniques to identify 'elements' on the device screen and return them to your test scripts as Objects for verification and interaction. Additionally while testing on Roku, we extend the Roku WebDriver api to provide native based locator support. The project is modeled after the Selenium/Appium structure so if you've used those toolsets for browsers/mobile devices previously - this framework will look and feel very comfortable to you. See the [Roku example tests](https://github.com/rokuality/rokuality-java/blob/master/src/test/java/com/rokuality/test/tests/RokuTests.java)  or the [XBox example tests](https://github.com/rokuality/rokuality-java/blob/master/src/test/java/com/rokuality/test/tests/XBoxTests.java) or [HDMI example tests](https://github.com/rokuality/rokuality-java/blob/master/src/test/java/com/rokuality/test/tests/PlaystationTests.java) for a full list of samples.
 
 #### Declare a driver to connect to the server:
 ```java
@@ -49,7 +49,7 @@ The Rokuality bindings operate via Image Based Object Recognition and OCR techni
 This will take care of installing/launching your device app package (if Roku or XBox), ensure the device is available and ready for test, and start a dedicated session on your device as indicated via your DeviceCapabilities object. See [Device Capabilities](#device-capabilities-explained) for an explanation of what capabilities are available for your driver startup.
 
 #### Finding elements:
-There are two primary ways of finding elements on your device:
+There are two primary ways of finding elements on your device that are available for all device types:
 
 1) TEXT
 ```java
@@ -70,6 +70,14 @@ OR
     driver.finder().findElement(By.Image("http://urltoyourimagesnippet.png"));
 ```
 In this example, you can provide a url to your locator image snippet and the server will download that image and evaluate it against the device screen. Useful for those more dynamic testing situations where you may want to query your application feeds to get the dynamic app images for evaluation, or if you want to keep your image based locators in a remote repository.
+
+#### Finding elements with Roku WebDriver:
+Optionally when testing on Roku you can provide the following native based locator types:
+```java
+        Element elementByText = rokuDriver.finder().findElement(RokuBy.Text("text"));
+        Element elementByTag = rokuDriver.finder().findElement(RokuBy.Tag("tag"));
+        Element elementByAttribute = rokuDriver.finder().findElement(RokuBy.Attribute("attribute", "value"));
+```
 
 #### Finding multi match elements:
 You can search for multiple element matches from a singular locator and return the results of match to an Element collection as follows:
@@ -144,6 +152,16 @@ Various methods exist for getting screen artifacts such as the screen image, sub
     // get the screen recording of the test session from start to now
     // note recording video quality will vary by the type of device under test
     driver.screen().getRecording();
+
+    // ROKU ONLY
+    // gets the xml page source of the Roku channel. Useful for constructing Roku native text/tag/attribute locators
+    // for more reliable element identification
+    rokuDriver.screen().getPageSource();
+
+    // ROKU ONLY
+    // gets the currently focused roku element
+    rokuDriver.screen().getActiveElement();
+
 ```
 
 #### Getting screen text:
