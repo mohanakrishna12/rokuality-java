@@ -1,5 +1,6 @@
 package com.rokuality.core.driver;
 
+import com.rokuality.core.enums.SessionStatus;
 import com.rokuality.core.exceptions.ServerFailureException;
 import com.rokuality.core.httpexecutor.HttpClient;
 import com.rokuality.core.utils.JsonUtils;
@@ -64,6 +65,35 @@ public class Options {
 		readySession.put("action", "element_polling_interval");
 		readySession.put("element_polling_interval", String.valueOf(pollIntervalInMilliseconds));
 		serverPostHandler.postToServerWithHandling("settings", readySession, ServerFailureException.class);
+	}
+
+	/**
+	 * Sets a session status that can be later retrieved during the course of a session. By default the session status is 'In Progress'.
+	 * Useful if you want to set a pass/fail/broken status during the course of a test run and then later retrieve the status
+	 * for communicating with a 3rd party service. The status will last only so long as the session is active and will be lost
+	 * once the user stops the session.
+	 *
+	 * @param status SessionStatus - the session status.
+	 * @throws ServerFailureException If the session status cannot be applied.
+	 */
+	public void setSessionStatus(SessionStatus status) {
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "set_session_status");
+		readySession.put("session_status", status.value());
+		serverPostHandler.postToServerWithHandling("settings", readySession, ServerFailureException.class);
+	}
+
+	/**
+	 * Gets the session status as set by calling the setSessionStatus() method.
+	 *
+	 * @return SessionStatus - the session status as set by the user during the course of the session.
+	 * @throws ServerFailureException If the session status cannot be retrieved.
+	 */
+	public SessionStatus getSessionStatus() {
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "get_session_status");
+		JSONObject results = serverPostHandler.postToServerWithHandling("settings", readySession, ServerFailureException.class);
+		return SessionStatus.getEnumByString((String) results.get("session_status"));
 	}
 
 }

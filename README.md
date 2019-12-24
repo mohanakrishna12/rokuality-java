@@ -13,17 +13,17 @@ MAVEN:
     <dependency>
         <groupId>com.rokuality</groupId>
         <artifactId>rokuality-java</artifactId>
-        <version>1.2.2</version>
+        <version>1.2.3</version>
         <scope>test</scope>
     </dependency>
 ```
 GRADLE:
 ```xml
-    implementation 'com.rokuality:rokuality-java:1.2.2'
+    implementation 'com.rokuality:rokuality-java:1.2.3'
 ```
 
 ### Getting started: Roku
-See the [Getting Started: Roku](https://github.com/rokuality/rokuality-server) section for details about preparing your Roku device for test.
+See the [Getting Started: Roku](https://github.com/rokuality/rokuality-server) section for details about preparing your Roku device for test. The Rokuality framework is one of the first projects to provide support for the [Roku WebDriver API](https://github.com/rokudev/automated-channel-testing).
 
 ### Getting started: XBox
 See the [Getting Started: XBox](https://github.com/rokuality/rokuality-server) section for details about preparing your XBox device for test.
@@ -33,7 +33,7 @@ See the [Getting Started: HDMI Connected Devices (Playstation, Cable SetTopBox, 
 
 
 ### The Basics:
-The Rokuality bindings operate via Image Based Object Recognition and OCR techniques to identify 'elements' on the device screen and return them to your test scripts as Objects for verification and interaction. The project is modeled after the Selenium/Appium structure so if you've used those toolsets for browsers/mobile devices previously - this framework will look and feel very comfortable to you. See the [Roku example tests](https://github.com/rokuality/rokuality-java/blob/master/src/test/java/com/rokuality/test/tests/RokuTests.java)  or the [XBox example tests](https://github.com/rokuality/rokuality-java/blob/master/src/test/java/com/rokuality/test/tests/XBoxTests.java) or [HDMI example tests](https://github.com/rokuality/rokuality-java/blob/master/src/test/java/com/rokuality/test/tests/PlaystationTests.java) for a full list of samples.
+The Rokuality bindings operate via Image Based Object Recognition and OCR techniques to identify 'elements' on the device screen and return them to your test scripts as Objects for verification and interaction. Additionally while testing on Roku, we extend the Roku WebDriver api to provide native based locator support. The project is modeled after the Selenium/Appium structure so if you've used those toolsets for browsers/mobile devices previously - this framework will look and feel very comfortable to you. See the [Roku example tests](https://github.com/rokuality/rokuality-java/blob/master/src/test/java/com/rokuality/test/tests/RokuTests.java)  or the [XBox example tests](https://github.com/rokuality/rokuality-java/blob/master/src/test/java/com/rokuality/test/tests/XBoxTests.java) or [HDMI example tests](https://github.com/rokuality/rokuality-java/blob/master/src/test/java/com/rokuality/test/tests/PlaystationTests.java) for a full list of samples.
 
 #### Declare a driver to connect to the server:
 ```java
@@ -49,7 +49,7 @@ The Rokuality bindings operate via Image Based Object Recognition and OCR techni
 This will take care of installing/launching your device app package (if Roku or XBox), ensure the device is available and ready for test, and start a dedicated session on your device as indicated via your DeviceCapabilities object. See [Device Capabilities](#device-capabilities-explained) for an explanation of what capabilities are available for your driver startup.
 
 #### Finding elements:
-There are two primary ways of finding elements on your device:
+There are two primary ways of finding elements on your device that are available for all device types:
 
 1) TEXT
 ```java
@@ -70,6 +70,14 @@ OR
     driver.finder().findElement(By.Image("http://urltoyourimagesnippet.png"));
 ```
 In this example, you can provide a url to your locator image snippet and the server will download that image and evaluate it against the device screen. Useful for those more dynamic testing situations where you may want to query your application feeds to get the dynamic app images for evaluation, or if you want to keep your image based locators in a remote repository.
+
+#### Finding elements with Roku WebDriver:
+Optionally when testing on Roku you can provide the following native based locator types:
+```java
+        Element elementByText = rokuDriver.finder().findElement(RokuBy.Text("text"));
+        Element elementByTag = rokuDriver.finder().findElement(RokuBy.Tag("tag"));
+        Element elementByAttribute = rokuDriver.finder().findElement(RokuBy.Attribute("attribute", "value"));
+```
 
 #### Finding multi match elements:
 You can search for multiple element matches from a singular locator and return the results of match to an Element collection as follows:
@@ -144,6 +152,16 @@ Various methods exist for getting screen artifacts such as the screen image, sub
     // get the screen recording of the test session from start to now
     // note recording video quality will vary by the type of device under test
     driver.screen().getRecording();
+
+    // ROKU ONLY
+    // gets the xml page source of the Roku channel. Useful for constructing Roku native text/tag/attribute locators
+    // for more reliable element identification
+    rokuDriver.screen().getPageSource();
+
+    // ROKU ONLY
+    // gets the currently focused roku element
+    rokuDriver.screen().getActiveElement();
+
 ```
 
 #### Getting screen text:
@@ -251,7 +269,7 @@ Various capabilities and values can be provided and passed to your driver instan
 | ------------- | ------------- | ------------- | ------------- |
 | Platform | Indicates the target platform for the tests.  | Required | String - Options are 'Roku, 'XBox', or 'HDMI' |
 | AppPackage | The sideloadable zip to be installed (Roku), or the .appxbundle (XBox). Must be a valid file path OR a valid url.  | Required for Roku and XBox - IF the 'App' capability is not provided. Ignored for HDMI devices | String |
-| App | The friendly id of your app for Roku and XBox. For Roku this cap is optional. If you provide this cap and ommit the 'AppPackage' cap then the device will attempt to launch an already sideloaded .zip. For XBox this cap is always required and MUST be the app id of your installed .appxbundle - if you ommit the 'AppPackage' cap then the device will attempt to launch an already installed appxbundle matching this id. |Roku = Optional. XBox = Required. HDMI = Ignored | String |
+| App | The friendly id of your app for Roku and XBox. For Roku this cap is optional. If you provide this cap and ommit the 'AppPackage' cap then the device will attempt to launch an already installed channel - Note that this can be an installed production channel id which you can retrieve from your device via `curl http://yourdeviceip:8060/query/apps`. But if you launch a production Roku channel you MUST have a connected HDMI capture card and provide the requisite `VideoCaptureInput` and `AudioCaptureInput` capabilities. For XBox this cap is always required and MUST be the app id of your installed .appxbundle - if you ommit the 'AppPackage' cap then the device will attempt to launch an already installed appxbundle matching this id. |Roku = Optional. XBox = Required. HDMI = Ignored | String |
 | DeviceIPAddress | The ip address of your Roku or XBox. Ignored for HDMI.  | Required for Roku or XBox | String - Your device MUST be reachable from the machine running the Rokuality server. |
 | DeviceUsername | The dev console username created when you enabled developer mode on your device  | Required - Roku Only | String |
 | DevicePassword | The dev console password created when you enabled developer mode on your device   | Required - Roku Only | String |
@@ -261,8 +279,8 @@ Various capabilities and values can be provided and passed to your driver instan
 | GoogleCredentials | The path to a valid .json Google Auth key service file. | Optional but Required if the 'OCRType' capability is set to 'GoogleVision' | The .json service key must exist on the machine triggering the tests. See [Using Google Vision](#using-google-vision-ocr) for additional details.  |
 | HomeHubIPAddress | The ip address of your logitech harmony hub. | Required for XBox or HDMI. Ignored for Roku | String - See the [why harmony](https://github.com/rokuality/rokuality-server) and [configuring your harmony](https://github.com/rokuality/rokuality-server) sections of the server page for details. |
 | DeviceName | The name of your device as saved in your Harmony hub i.e. 'MyXBoxOne', or 'MyPlaystation4'. | Required for XBox and HDMI. Ignored for Roku | String |
-| VideoCaptureInput | The name of your video card capture video input if running an HDMI connected test. Will vary by the type of hdmi capture card. | Required for HDMI device types (Playstation, Cable SetTop Box, AndroidTV, AppleTV, etc. Ignored for Roku or XBox | Can be found by running a terminal command. For MAC: `~/Rokuality/dependencies/ffmpeg_v4.1 -f avfoundation -list_devices true -i ""` and for Windows: `~\Rokuality\dependencies\ffmpeg_win_v4.1\bin\ffmpeg.exe -list_devices true -f dshow -i dummy` |
-| AudioCaptureInput | The name of your video card capture audio input if running an HDMI connected test. Will vary by the type of hdmi capture card. | Required for HDMI device types (Playstation, Cable SetTop Box, AndroidTV, AppleTV, etc. Ignored for Roku or XBox | Can be found by running a terminal command. For MAC: `~/Rokuality/dependencies/ffmpeg_v4.1 -f avfoundation -list_devices true -i ""` and for Windows: `~\Rokuality\dependencies\ffmpeg_win_v4.1\bin\ffmpeg.exe -list_devices true -f dshow -i dummy` |
+| VideoCaptureInput | The name of your video card capture video input if running an HDMI connected test. Will vary by the type of hdmi capture card. | Required for HDMI device types (Playstation, Cable SetTop Box, AndroidTV, AppleTV, etc. Optional for Roku if you wish to test a production channel. Ignored for XBox | Can be found by running a terminal command. For MAC: `~/Rokuality/dependencies/ffmpeg_v4.1 -f avfoundation -list_devices true -i ""` and for Windows: `~\Rokuality\dependencies\ffmpeg_win_v4.1\bin\ffmpeg.exe -list_devices true -f dshow -i dummy` |
+| AudioCaptureInput | The name of your video card capture audio input if running an HDMI connected test. Will vary by the type of hdmi capture card. | Required for HDMI device types (Playstation, Cable SetTop Box, AndroidTV, AppleTV, etc. Optional for Roku if you wish to test a production channel. Ignored for XBox | Can be found by running a terminal command. For MAC: `~/Rokuality/dependencies/ffmpeg_v4.1 -f avfoundation -list_devices true -i ""` and for Windows: `~\Rokuality\dependencies\ffmpeg_win_v4.1\bin\ffmpeg.exe -list_devices true -f dshow -i dummy` |
 | MirrorScreen | If provided with a widthxheight value, then a window will be launched on the user's desktop showing the test activity in real time for the duration of the test session. Useful for debugging tests on remote devices.  | Optional | String - 'widthxheight' format. i.e. '1200x800' will launch a screen mirror with width 1200, and height 800. |
 
 #### Element Timeouts and Polling:

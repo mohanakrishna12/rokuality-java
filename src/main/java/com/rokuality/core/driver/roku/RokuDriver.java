@@ -4,7 +4,6 @@ import com.rokuality.core.driver.BaseDriver;
 import com.rokuality.core.driver.DeviceCapabilities;
 import com.rokuality.core.driver.Finder;
 import com.rokuality.core.driver.Options;
-import com.rokuality.core.driver.Screen;
 import com.rokuality.core.driver.ServerPostHandler;
 import com.rokuality.core.exceptions.ServerFailureException;
 import com.rokuality.core.exceptions.SessionNotStartedException;
@@ -70,7 +69,7 @@ public class RokuDriver extends BaseDriver {
 	}
 
 	/**
-	 * Gets information about the device under test.
+	 * Gets information about the device under test and the Roku media player.
 	 * 
 	 * @return RokuInfo
 	 */
@@ -81,10 +80,10 @@ public class RokuDriver extends BaseDriver {
 	/**
 	 * Initiates the Screen for getting information and artifacts from the device screen.
 	 * 
-	 * @return Screen
+	 * @return RokuScreen
 	 */
-	public Screen screen() {
-		return new Screen(httpClient, super.getSession());
+	public RokuScreen screen() {
+		return new RokuScreen(httpClient, super.getSession());
 	}
 
 	/**

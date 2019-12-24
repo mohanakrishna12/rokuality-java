@@ -29,4 +29,15 @@ public class RokuInfo {
 		return new RokuDeviceInfo(serverPostHandler.postToServerWithHandling("info", readySession, ServerFailureException.class));
 	}
 
+	/**
+	 * Gets info about the Roku media player under test including buffering information, the player state, player errors, etc.
+	 * 
+	 * @return RokuMediaPlayerInfo - Various information about the device media player under test.
+	 */
+	public RokuMediaPlayerInfo getMediaPlayerInfo() {
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "media_player_info");
+		return new RokuMediaPlayerInfo(serverPostHandler.postToServerWithHandling("info", readySession, ServerFailureException.class));
+	}
+
 }
