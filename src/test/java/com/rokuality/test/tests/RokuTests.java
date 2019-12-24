@@ -15,6 +15,7 @@ import com.rokuality.core.driver.roku.RokuDeviceInfo;
 import com.rokuality.core.driver.roku.RokuDriver;
 import com.rokuality.core.driver.roku.RokuMediaPlayerInfo;
 import com.rokuality.core.enums.RokuButton;
+import com.rokuality.core.enums.SessionStatus;
 import com.rokuality.core.exceptions.NoSuchElementException;
 import com.rokuality.core.exceptions.ServerFailureException;
 import com.rokuality.core.exceptions.SessionNotStartedException;
@@ -970,7 +971,26 @@ public class RokuTests {
 		Assert.assertFalse(mediaPlayerInfo.isLive());
 		Assert.assertEquals(mediaPlayerInfo.getState(), "close");
 
-		
+	}
+
+	@Test(groups = { "Roku" })
+	public void sessionStatusTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("AppPackage", DEBUG_URL_ZIP);
+
+		rokuDriver = new RokuDriver(SERVER_URL, caps);
+
+		rokuDriver.options().setElementTimeout(15000);
+		rokuDriver.finder().findElement(RokuBy.Text("VIEW MORE"));
+
+		for (SessionStatus status : SessionStatus.values()) {
+			rokuDriver.options().setSessionStatus(status);
+			SessionStatus s = rokuDriver.options().getSessionStatus();
+			System.out.println(s);
+			Assert.assertEquals(status, s);
+		}
+
 	}
 
 }
