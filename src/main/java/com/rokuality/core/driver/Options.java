@@ -73,7 +73,7 @@ public class Options {
 	 * depending on the test scenario. This option allows you to throttle those remote control commands.
 	 * It will last for the duration of the driver session, or until a new value is set.
 	 *
-	 * @param pollIntervalInMilliseconds long - the pause between remote commands in milliseconds. i.e. '1000'
+	 * @param delayInMilliseconds long - the pause between remote commands in milliseconds. i.e. '1000'
 	 * will pause for 1 second between every remote control button press sent to the server. Defaults to 0.
 	 * @throws ServerFailureException If the remote control delay cannot be applied.
 	 */
