@@ -68,6 +68,23 @@ public class Options {
 	}
 
 	/**
+	 * Sets a dely in milliseconds for remote control interactions. By default there is no pause between 
+	 * remote control commands so remote interactions can happen very fast and may lead to test flake 
+	 * depending on the test scenario. This option allows you to throttle those remote control commands.
+	 * It will last for the duration of the driver session, or until a new value is set.
+	 *
+	 * @param delayInMilliseconds long - the pause between remote commands in milliseconds. i.e. '1000'
+	 * will pause for 1 second between every remote control button press sent to the server. Defaults to 0.
+	 * @throws ServerFailureException If the remote control delay cannot be applied.
+	 */
+	public void setRemoteInteractDelay(long delayInMilliseconds) {
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "remote_interact_delay");
+		readySession.put("remote_interact_delay", String.valueOf(delayInMilliseconds));
+		serverPostHandler.postToServerWithHandling("settings", readySession, ServerFailureException.class);
+	}
+
+	/**
 	 * Sets a session status that can be later retrieved during the course of a session. By default the session status is 'In Progress'.
 	 * Useful if you want to set a pass/fail/broken status during the course of a test run and then later retrieve the status
 	 * for communicating with a 3rd party service. The status will last only so long as the session is active and will be lost

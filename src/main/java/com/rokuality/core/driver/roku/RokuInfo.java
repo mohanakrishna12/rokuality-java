@@ -40,4 +40,26 @@ public class RokuInfo {
 		return new RokuMediaPlayerInfo(serverPostHandler.postToServerWithHandling("info", readySession, ServerFailureException.class));
 	}
 
+	/**
+	 * Gets a JSON object containing information about all installed apps on the device.
+	 * 
+	 * @return JSONObject - A JSON object containing info about all installed apps on the device under test.
+	 */
+	public JSONObject getInstalledApps() {
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "get_installed_apps");
+		return serverPostHandler.postToServerWithHandling("info", readySession, ServerFailureException.class);
+	}
+
+	/**
+	 * Gets a JSON object containing information about the currently focused app on the device.
+	 * 
+	 * @return JSONObject - A JSON object containing info about the currently focused app on the device under test.
+	 */
+	public JSONObject getActiveApp() {
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "get_active_app");
+		return serverPostHandler.postToServerWithHandling("info", readySession, ServerFailureException.class);
+	}
+
 }
