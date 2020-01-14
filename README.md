@@ -13,13 +13,13 @@ MAVEN:
     <dependency>
         <groupId>com.rokuality</groupId>
         <artifactId>rokuality-java</artifactId>
-        <version>1.2.3</version>
+        <version>1.2.4</version>
         <scope>test</scope>
     </dependency>
 ```
 GRADLE:
 ```xml
-    implementation 'com.rokuality:rokuality-java:1.2.3'
+    implementation 'com.rokuality:rokuality-java:1.2.4'
 ```
 
 ### Getting started: Roku
@@ -123,6 +123,12 @@ All remote commands are available. See [roku remote command](https://github.com/
     rokuDriver.remote().sendKeys("typing out hello world on a search screen");
 ```
 
+Note that by default, the time delay between multiple remote control commands is 0 milliseconds, meaning multiple remote control commands will happen as quickly as possible. This can in some cases lead to test flake due to multiple commands happening back to back too quickly. If this is happening, you can add a delay in between remote control button presses as follows:
+```java
+    // sets a delay between remote control button presses to 2 seconds. this will last for the duration of the session or until a new value is set. If not set, defualts to 0
+    driver.options().setRemoteInteractDelay(2000);
+```
+
 #### Sending remote control commands to the device - HDMI Devices (Playstation, Cable SetTop, AndroidTV, AppleTV, and more):
 To send remote button presses to the HDMI/IR device you can do the following:
 ```java
@@ -176,6 +182,17 @@ Screen text of the device is returned as a collection of ScreenText objects as f
     }
 ```
 Alternatively you can get the entire device screen as a full string via `driver.screen().getTextAsString();`
+
+#### Getting information about the media player (ROKU ONLY):
+For Roku devices, it's possible to get details about your media player in flight through the Roku WebDriver rest api which can be accessed in your test code as follows:
+```java
+    // gets information about the media in flight including state, bitrate, encoding information, and much much more!
+    RokuMediaPlayerInfo mediaPlayerInfo = rokuDriver.info().getMediaPlayerInfo();
+	Assert.assertFalse(mediaPlayerInfo.isError());
+	Assert.assertFalse(mediaPlayerInfo.isLive());
+    Assert.assertEquals(mediaPlayerInfo.getState(), "play");
+    System.out.println(mediaPlayerInfo.getBitrate());
+```
 
 #### Device Capabilities explained:
 Various capabilities and values can be provided and passed to your driver instance at startup. Some of them are required and others are optional. The following are the minimum capabilities **required** to start a driver session.

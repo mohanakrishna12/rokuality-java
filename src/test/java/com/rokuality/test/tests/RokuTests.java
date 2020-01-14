@@ -20,6 +20,7 @@ import com.rokuality.core.exceptions.NoSuchElementException;
 import com.rokuality.core.exceptions.ServerFailureException;
 import com.rokuality.core.exceptions.SessionNotStartedException;
 
+import org.json.simple.JSONObject;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -232,7 +233,10 @@ public class RokuTests {
 
 		rokuDriver = new RokuDriver(SERVER_URL, caps);
 
-		rokuDriver.options().setElementTimeout(5000);
+		rokuDriver.options().setElementTimeout(10000);
+		if (rokuDriver.finder().findElements(RokuBy.Text("ACCEPT & CONTINUE")).size() > 0) {
+			rokuDriver.remote().pressButton(RokuButton.SELECT);
+		}
 		
 		Element elementByText = rokuDriver.finder().findElement(RokuBy.Text("FEATURED"));
 		System.out.println(elementByText);
@@ -243,14 +247,14 @@ public class RokuTests {
 		Assert.assertEquals(0, elementByTag.getX());
 		Assert.assertEquals(0, elementByTag.getY());
 		Assert.assertEquals(663, elementByTag.getWidth());
-		Assert.assertEquals(77, elementByTag.getHeight());
+		Assert.assertEquals(151, elementByTag.getHeight());
 
-		Element elementByAttribute = rokuDriver.finder().findElement(RokuBy.Attribute("bounds", "{0, 0, 663, 77}"));
+		Element elementByAttribute = rokuDriver.finder().findElement(RokuBy.Attribute("bounds", "{0, 0, 663, 151}"));
 		System.out.println(elementByAttribute.getElementJSON());
 		Assert.assertEquals(0, elementByAttribute.getX());
 		Assert.assertEquals(0, elementByAttribute.getY());
 		Assert.assertEquals(663, elementByAttribute.getWidth());
-		Assert.assertEquals(77, elementByAttribute.getHeight());
+		Assert.assertEquals(151, elementByAttribute.getHeight());
 		
 	}
 
@@ -922,7 +926,10 @@ public class RokuTests {
 
 		rokuDriver = new RokuDriver(SERVER_URL, caps);
 
-		rokuDriver.options().setElementTimeout(15000);
+		rokuDriver.options().setElementTimeout(10000);
+		if (rokuDriver.finder().findElements(RokuBy.Text("ACCEPT & CONTINUE")).size() > 0) {
+			rokuDriver.remote().pressButton(RokuButton.SELECT);
+		}
 		
 		Element elementByText = rokuDriver.finder().findElement(RokuBy.Text("VIEW MORE"));
 		System.out.println(elementByText);
@@ -944,7 +951,10 @@ public class RokuTests {
 
 		rokuDriver = new RokuDriver(SERVER_URL, caps);
 
-		rokuDriver.options().setElementTimeout(15000);
+		rokuDriver.options().setElementTimeout(10000);
+		if (rokuDriver.finder().findElements(RokuBy.Text("ACCEPT & CONTINUE")).size() > 0) {
+			rokuDriver.remote().pressButton(RokuButton.SELECT);
+		}
 		
 		List<Element> elements = rokuDriver.finder().findElements(RokuBy.Tag("Label"));
 		Assert.assertTrue(elements.size() > 0);
@@ -963,13 +973,17 @@ public class RokuTests {
 
 		rokuDriver = new RokuDriver(SERVER_URL, caps);
 
-		rokuDriver.options().setElementTimeout(15000);
+		rokuDriver.options().setElementTimeout(10000);
+		if (rokuDriver.finder().findElements(RokuBy.Text("ACCEPT & CONTINUE")).size() > 0) {
+			rokuDriver.remote().pressButton(RokuButton.SELECT);
+		}
+
 		rokuDriver.finder().findElement(RokuBy.Text("VIEW MORE"));
 
 		RokuMediaPlayerInfo mediaPlayerInfo = rokuDriver.info().getMediaPlayerInfo();
 		Assert.assertFalse(mediaPlayerInfo.isError());
 		Assert.assertFalse(mediaPlayerInfo.isLive());
-		Assert.assertEquals(mediaPlayerInfo.getState(), "close");
+		Assert.assertEquals(mediaPlayerInfo.getState(), "none");
 
 	}
 
@@ -981,7 +995,11 @@ public class RokuTests {
 
 		rokuDriver = new RokuDriver(SERVER_URL, caps);
 
-		rokuDriver.options().setElementTimeout(15000);
+		rokuDriver.options().setElementTimeout(10000);
+		if (rokuDriver.finder().findElements(RokuBy.Text("ACCEPT & CONTINUE")).size() > 0) {
+			rokuDriver.remote().pressButton(RokuButton.SELECT);
+		}
+
 		rokuDriver.finder().findElement(RokuBy.Text("VIEW MORE"));
 
 		for (SessionStatus status : SessionStatus.values()) {
@@ -990,6 +1008,59 @@ public class RokuTests {
 			System.out.println(s);
 			Assert.assertEquals(status, s);
 		}
+
+	}
+
+	@Test(groups = { "Roku" })
+	public void appInfoTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("AppPackage", DEBUG_URL_ZIP);
+
+		rokuDriver = new RokuDriver(SERVER_URL, caps);
+
+		JSONObject installedAppsJSON = rokuDriver.info().getInstalledApps();
+		Assert.assertTrue(installedAppsJSON.toJSONString().contains("USA Network"));
+
+		JSONObject launchedAppJSON = rokuDriver.info().getActiveApp();
+		Assert.assertTrue(launchedAppJSON.toJSONString().contains("dev"));
+
+	}
+
+	@Test(groups = { "Roku" })
+	public void remoteControlDelayTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		rokuDriver = new RokuDriver(SERVER_URL, caps);
+
+		rokuDriver.options().setElementTimeout(5000);
+		rokuDriver.finder().findElement(By.Text("SHOWS"));
+
+		long startTime = System.currentTimeMillis();
+		rokuDriver.remote().pressButton(RokuButton.DOWN_ARROW);
+		rokuDriver.remote().pressButton(RokuButton.RIGHT_ARROW);
+		long endTime = System.currentTimeMillis();
+		long diffInSeconds = (endTime - startTime) / 1000;
+		System.out.println(diffInSeconds);
+		Assert.assertTrue(diffInSeconds <= 1);
+
+		rokuDriver.options().setRemoteInteractDelay(2000);
+		startTime = System.currentTimeMillis();
+		rokuDriver.remote().pressButton(RokuButton.RIGHT_ARROW);
+		rokuDriver.remote().pressButton(RokuButton.RIGHT_ARROW);
+		endTime = System.currentTimeMillis();
+		diffInSeconds = (endTime - startTime) / 1000;
+		System.out.println(diffInSeconds);
+		Assert.assertTrue(diffInSeconds >= 4 && diffInSeconds <= 6);
+
+		rokuDriver.options().setRemoteInteractDelay(0);
+		startTime = System.currentTimeMillis();
+		rokuDriver.remote().pressButton(RokuButton.RIGHT_ARROW);
+		rokuDriver.remote().pressButton(RokuButton.RIGHT_ARROW);
+		endTime = System.currentTimeMillis();
+		diffInSeconds = (endTime - startTime) / 1000;
+		System.out.println(diffInSeconds);
+		Assert.assertTrue(diffInSeconds <= 1);
 
 	}
 
