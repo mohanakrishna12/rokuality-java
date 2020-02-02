@@ -3,7 +3,6 @@ package com.rokuality.core.driver.roku;
 import com.rokuality.core.driver.BaseDriver;
 import com.rokuality.core.driver.DeviceCapabilities;
 import com.rokuality.core.driver.Finder;
-import com.rokuality.core.driver.Options;
 import com.rokuality.core.driver.ServerPostHandler;
 import com.rokuality.core.exceptions.ServerFailureException;
 import com.rokuality.core.exceptions.SessionNotStartedException;
@@ -89,10 +88,10 @@ public class RokuDriver extends BaseDriver {
 	/**
 	 * Initiates Options for various driver and finder settings.
 	 * 
-	 * @return Options
+	 * @return RokuOptions
 	 */
-	public Options options() {
-		return new Options(httpClient, super.getSession());
+	public RokuOptions options() {
+		return new RokuOptions(httpClient, super.getSession());
 	}
 
 	/**
