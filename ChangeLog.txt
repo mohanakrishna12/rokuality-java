@@ -1,3 +1,7 @@
+1.2.5 - Changes from 1.2.4
+1. Adds the ability to get the Roku debug logs via driver.info().getDebugLogs(); (requires Rokuality server v1.2.6 or higher)
+2. Adds the ability to reboot a Roku device via driver.options().reboot(); (requires Rokuality server v1.2.6 or higher)
+
 1.2.4 - Changes from 1.2.3
 1. Adds new Options.setRemoteInteractDelay() method for controlling the pause in between remote control button presses to prevent test flake due to remote control changes happening too quickly. Requires Rokuality Server version 1.2.5
 2. Adds new RokuInfo.getInstalledApps() and RokuInfo.getActiveApp() methods for getting the installed apps and the current focused app on the device. Requires Rokuality Server version 1.2.5

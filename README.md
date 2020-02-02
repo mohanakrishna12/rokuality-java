@@ -17,13 +17,13 @@ MAVEN:
     <dependency>
         <groupId>com.rokuality</groupId>
         <artifactId>rokuality-java</artifactId>
-        <version>1.2.4</version>
+        <version>1.2.5</version>
         <scope>test</scope>
     </dependency>
 ```
 GRADLE:
 ```xml
-    implementation 'com.rokuality:rokuality-java:1.2.4'
+    implementation 'com.rokuality:rokuality-java:1.2.5'
 ```
 
 ### Getting started: Roku
@@ -196,6 +196,12 @@ For Roku devices, it's possible to get details about your media player in flight
 	Assert.assertFalse(mediaPlayerInfo.isLive());
     Assert.assertEquals(mediaPlayerInfo.getState(), "play");
     System.out.println(mediaPlayerInfo.getBitrate());
+```
+
+#### Getting debug log info (ROKU ONLY):
+For Roku devices, it's possible to get the debug logs as follows:
+```java
+    rokuDriver.info().getDebugLogs();
 ```
 
 #### Device Capabilities explained:

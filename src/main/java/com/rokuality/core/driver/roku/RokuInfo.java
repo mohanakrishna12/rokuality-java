@@ -62,4 +62,16 @@ public class RokuInfo {
 		return serverPostHandler.postToServerWithHandling("info", readySession, ServerFailureException.class);
 	}
 
+	/**
+	 * Gets the Roku debugger logs from session start to now.
+	 * 
+	 * @return String - The Roku debugger logs.
+	 */
+	public String getDebugLogs() {
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "get_debug_logs");
+		JSONObject resultObj = serverPostHandler.postToServerWithHandling("info", readySession, ServerFailureException.class);
+		return String.valueOf(resultObj.get("log_content"));
+	}
+
 }

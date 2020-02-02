@@ -10,8 +10,8 @@ import org.json.simple.JSONObject;
 @SuppressWarnings("unchecked")
 public class Options {
 
-	JSONObject session = null;
-	private ServerPostHandler serverPostHandler = null;
+	protected JSONObject session = null;
+	protected ServerPostHandler serverPostHandler = null;
 	
 	public Options(HttpClient httpClient, JSONObject session) {
 		this.session = session;

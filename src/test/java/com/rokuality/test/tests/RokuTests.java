@@ -1064,4 +1064,18 @@ public class RokuTests {
 
 	}
 
+	@Test(groups = { "Roku" })
+	public void getDebugLogs() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		rokuDriver = new RokuDriver(SERVER_URL, caps);
+
+		rokuDriver.options().setElementTimeout(5000);
+		rokuDriver.finder().findElement(By.Text("SHOWS"));
+
+		String logContent = rokuDriver.info().getDebugLogs();
+		Assert.assertTrue(logContent.toLowerCase().contains("bet"));
+
+	}
+
 }
