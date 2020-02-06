@@ -122,9 +122,13 @@ To send remote button presses to a Roku or XBox you can do the following:
     // xbox
     xboxDriver.remote().pressButton(XBoxButton.A);
 ```
-All remote commands are available. See [roku remote command](https://github.com/rokuality/rokuality-java/blob/master/src/main/java/com/rokuality/core/enums/RokuButton.java) or [xbox remote command](https://github.com/rokuality/rokuality-java/blob/master/src/main/java/com/rokuality/core/enums/XBoxButton.java) for all available remote buttons. Also you can send literal characters to the device if you need to interact with a Roku search selector (coming soon for XBox as well):
+All remote commands are available. See [roku remote command](https://github.com/rokuality/rokuality-java/blob/master/src/main/java/com/rokuality/core/enums/RokuButton.java) or [xbox remote command](https://github.com/rokuality/rokuality-java/blob/master/src/main/java/com/rokuality/core/enums/XBoxButton.java) for all available remote buttons. 
+
+Also you can send a string of literal characters to the device if you need to interact with a Roku/XBox search selector:
 ```java
-    rokuDriver.remote().sendKeys("typing out hello world on a search screen");
+    // roku or xbox
+    // NOTE the xbox and roku soft keyboards must be in focus on the screen for this to have an effect
+    driver.remote().sendKeys("typing out hello world on a search screen");
 ```
 
 Note that by default, the time delay between multiple remote control commands is 0 milliseconds, meaning multiple remote control commands will happen as quickly as possible. This can in some cases lead to test flake due to multiple commands happening back to back too quickly. If this is happening, you can add a delay in between remote control button presses as follows:

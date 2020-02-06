@@ -16,7 +16,6 @@ import com.rokuality.core.enums.XBoxButton;
 import com.rokuality.core.exceptions.NoSuchElementException;
 import com.rokuality.core.exceptions.ServerFailureException;
 import com.rokuality.core.exceptions.SessionNotStartedException;
-import com.rokuality.core.utils.SleepUtils;
 
 import org.testng.annotations.*;
 
@@ -536,6 +535,18 @@ public class XBoxTests {
 		xboxDriver.options().setElementTimeout(0);
 		elementPresent = xboxDriver.finder().findElements(By.Text("no such element")).size() > 0;
 		Assert.assertFalse(elementPresent);
+
+	}
+
+	@Test(groups = { "XBox" })
+	public void sendKeysTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		xboxDriver = new XBoxDriver(SERVER_URL, caps);
+
+		// TODO update test scenario for send keys
+		Assert.fail();
+		xboxDriver.remote().sendKeys("some text to type");
 
 	}
 
