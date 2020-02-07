@@ -17,13 +17,13 @@ MAVEN:
     <dependency>
         <groupId>com.rokuality</groupId>
         <artifactId>rokuality-java</artifactId>
-        <version>1.2.5</version>
+        <version>1.2.6</version>
         <scope>test</scope>
     </dependency>
 ```
 GRADLE:
 ```xml
-    implementation 'com.rokuality:rokuality-java:1.2.5'
+    implementation 'com.rokuality:rokuality-java:1.2.6'
 ```
 
 ### Getting started: Roku

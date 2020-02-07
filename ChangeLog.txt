@@ -1,6 +1,6 @@
 1.2.6 - Changes from 1.2.5 (IN PROGRESS)
 1. Updates XBox capabilities to remove the Harmony hub requirement.
-2. Adds new XBoxRemote.sendKeys() method for sending a literal string of text to an XBox text input if the XBox virtual keyboard is in focus.
+2. Adds new XBoxRemote.sendKeys() method for sending a literal string of text to an XBox text input if the XBox virtual keyboard is in focus. (required Rokuality server v1.2.7 or higher)
 
 1.2.5 - Changes from 1.2.4
 1. Adds the ability to get the Roku debug logs via driver.info().getDebugLogs(); (requires Rokuality server v1.2.6 or higher)
