@@ -17,13 +17,13 @@ MAVEN:
     <dependency>
         <groupId>com.rokuality</groupId>
         <artifactId>rokuality-java</artifactId>
-        <version>1.2.5</version>
+        <version>1.2.6</version>
         <scope>test</scope>
     </dependency>
 ```
 GRADLE:
 ```xml
-    implementation 'com.rokuality:rokuality-java:1.2.5'
+    implementation 'com.rokuality:rokuality-java:1.2.6'
 ```
 
 ### Getting started: Roku
@@ -78,9 +78,9 @@ In this example, you can provide a url to your locator image snippet and the ser
 #### Finding elements with Roku WebDriver:
 Optionally when testing on Roku you can provide the following native based locator types:
 ```java
-        Element elementByText = rokuDriver.finder().findElement(RokuBy.Text("text"));
-        Element elementByTag = rokuDriver.finder().findElement(RokuBy.Tag("tag"));
-        Element elementByAttribute = rokuDriver.finder().findElement(RokuBy.Attribute("attribute", "value"));
+    Element elementByText = rokuDriver.finder().findElement(RokuBy.Text("text"));
+    Element elementByTag = rokuDriver.finder().findElement(RokuBy.Tag("tag"));
+    Element elementByAttribute = rokuDriver.finder().findElement(RokuBy.Attribute("attribute", "value"));
 ```
 
 #### Finding multi match elements:
@@ -122,9 +122,13 @@ To send remote button presses to a Roku or XBox you can do the following:
     // xbox
     xboxDriver.remote().pressButton(XBoxButton.A);
 ```
-All remote commands are available. See [roku remote command](https://github.com/rokuality/rokuality-java/blob/master/src/main/java/com/rokuality/core/enums/RokuButton.java) or [xbox remote command](https://github.com/rokuality/rokuality-java/blob/master/src/main/java/com/rokuality/core/enums/XBoxButton.java) for all available remote buttons. Also you can send literal characters to the device if you need to interact with a Roku search selector (coming soon for XBox as well):
+All remote commands are available. See [roku remote command](https://github.com/rokuality/rokuality-java/blob/master/src/main/java/com/rokuality/core/enums/RokuButton.java) or [xbox remote command](https://github.com/rokuality/rokuality-java/blob/master/src/main/java/com/rokuality/core/enums/XBoxButton.java) for all available remote buttons. 
+
+Also you can send a string of literal characters to the device if you need to interact with a Roku/XBox search selector:
 ```java
-    rokuDriver.remote().sendKeys("typing out hello world on a search screen");
+    // roku or xbox
+    // NOTE the xbox and roku soft keyboards must be in focus on the screen for this to have an effect
+    driver.remote().sendKeys("typing out hello world on a search screen");
 ```
 
 Note that by default, the time delay between multiple remote control commands is 0 milliseconds, meaning multiple remote control commands will happen as quickly as possible. This can in some cases lead to test flake due to multiple commands happening back to back too quickly. If this is happening, you can add a delay in between remote control button presses as follows:
@@ -192,8 +196,8 @@ For Roku devices, it's possible to get details about your media player in flight
 ```java
     // gets information about the media in flight including state, bitrate, encoding information, and much much more!
     RokuMediaPlayerInfo mediaPlayerInfo = rokuDriver.info().getMediaPlayerInfo();
-	Assert.assertFalse(mediaPlayerInfo.isError());
-	Assert.assertFalse(mediaPlayerInfo.isLive());
+    Assert.assertFalse(mediaPlayerInfo.isError());
+    Assert.assertFalse(mediaPlayerInfo.isLive());
     Assert.assertEquals(mediaPlayerInfo.getState(), "play");
     System.out.println(mediaPlayerInfo.getBitrate());
 ```
@@ -254,11 +258,13 @@ Various capabilities and values can be provided and passed to your driver instan
     // Your XBox device ip address
     capabilities.addCapability("DeviceIPAddress", "yourdeviceipaddress");
 
-    // Your Harmony hub ip address.
-    capabilities.addCapability("HomeHubIPAddress", "harmonyipaddress");
+    // XBox Live username and password
+    capabilities.addCapability("DeviceUsername", "console_xbox_live_username");
+    capabilities.addCapability("DevicePassword", "console_xbox_live_password");
 
-    // Your device name as saved in your harmony app on your harmony hib
-    capabilities.addCapability("DeviceName", "nameofdeviceinharmony");
+    // The XBox live  console id
+    // can be found from your xbox dev settings page at https://your_xbox_device_ip:11443/#Settings
+	capabilities.addCapability("DeviceID", "xbox_live_console_id");
     
     // Pass the capabilities and start the test
     XBoxDriver xboxDriver = new XBoxDriver("http://urltoyourrunningserver:port, capabilities);
@@ -298,14 +304,15 @@ Various capabilities and values can be provided and passed to your driver instan
 | AppPackage | The sideloadable zip to be installed (Roku), or the .appxbundle (XBox). Must be a valid file path OR a valid url.  | Required for Roku and XBox - IF the 'App' capability is not provided. Ignored for HDMI devices | String |
 | App | The friendly id of your app for Roku and XBox. For Roku this cap is optional. If you provide this cap and ommit the 'AppPackage' cap then the device will attempt to launch an already installed channel - Note that this can be an installed production channel id which you can retrieve from your device via `curl http://yourdeviceip:8060/query/apps`. But if you launch a production Roku channel you MUST have a connected HDMI capture card and provide the requisite `VideoCaptureInput` and `AudioCaptureInput` capabilities. For XBox this cap is always required and MUST be the app id of your installed .appxbundle - if you ommit the 'AppPackage' cap then the device will attempt to launch an already installed appxbundle matching this id. |Roku = Optional. XBox = Required. HDMI = Ignored | String |
 | DeviceIPAddress | The ip address of your Roku or XBox. Ignored for HDMI.  | Required for Roku or XBox | String - Your device MUST be reachable from the machine running the Rokuality server. |
-| DeviceUsername | The dev console username created when you enabled developer mode on your device  | Required - Roku Only | String |
-| DevicePassword | The dev console password created when you enabled developer mode on your device   | Required - Roku Only | String |
+| DeviceUsername | Roku = The dev console username created when you enabled developer mode on your device. XBox = The XBox live username signed into the XBox console.  | Required - Roku and XBox | String |
+| DevicePassword | Roku = The dev console password created when you enabled developer mode on your device. XBox = The XBox live password signed into the XBox console.   | Required - Roku and XBox | String |
+| DeviceID | XBox - the XBox live console id. Ignored for Roku and HDMI.   | Required - XBox | String |
 | ImageMatchSimilarity | An optional image match similarity default used during Image locator evaluations. A lower value will allow for greater tolerance of image disimilarities between the image locator and the screen, BUT will also increase the possibility of a false positive.  | Optional | Double. Defaults to .90 |
 | ScreenSizeOverride | An optional 'WIDTHxHEIGHT' cap that all screen image captures will be resized to prior to match evaluation. Useful if you want to enforce test consistence across multiple device types and multiple developer machines or ci environments.  | Optional | String - I.e. a value of '1800x1200' will ensure that all image captures are resized to those specs before the locator evaluation happens no matter what the actual device screen size is.  |
 | OCRType | The OCR type - Options are 'Tesseract' OR 'GoogleVision'. In most cases Tesseract is more than enough but if you find that your textual evalutions are lacking reliability you can provide 'GoogleVision' as a more powerful alternative. BUT if the capability is set to 'GoogleVision' you MUST have a valid Google Vision account setup and provide the 'GoogleCredentials' capability with a valid file path to the oath2 .json file with valid credentials for the Google Vision service.  | Required | String 
 | GoogleCredentials | The path to a valid .json Google Auth key service file. | Optional but Required if the 'OCRType' capability is set to 'GoogleVision' | The .json service key must exist on the machine triggering the tests. See [Using Google Vision](#using-google-vision-ocr) for additional details.  |
-| HomeHubIPAddress | The ip address of your logitech harmony hub. | Required for XBox or HDMI. Ignored for Roku | String - See the [why harmony](https://github.com/rokuality/rokuality-server) and [configuring your harmony](https://github.com/rokuality/rokuality-server) sections of the server page for details. |
-| DeviceName | The name of your device as saved in your Harmony hub i.e. 'MyXBoxOne', or 'MyPlaystation4'. | Required for XBox and HDMI. Ignored for Roku | String |
+| HomeHubIPAddress | The ip address of your logitech harmony hub. | Required for HDMI. Ignored for Roku and XBox | String - See the [why harmony](https://github.com/rokuality/rokuality-server) and [configuring your harmony](https://github.com/rokuality/rokuality-server) sections of the server page for details. |
+| DeviceName | The name of your device as saved in your Harmony hub i.e. 'MyPlaystation4'. | Required for HDMI. Ignored for Roku and XBox | String |
 | VideoCaptureInput | The name of your video card capture video input if running an HDMI connected test. Will vary by the type of hdmi capture card. | Required for HDMI device types (Playstation, Cable SetTop Box, AndroidTV, AppleTV, etc. Optional for Roku if you wish to test a production channel. Ignored for XBox | Can be found by running a terminal command. For MAC: `~/Rokuality/dependencies/ffmpeg_v4.1 -f avfoundation -list_devices true -i ""` and for Windows: `~\Rokuality\dependencies\ffmpeg_win_v4.1\bin\ffmpeg.exe -list_devices true -f dshow -i dummy` |
 | AudioCaptureInput | The name of your video card capture audio input if running an HDMI connected test. Will vary by the type of hdmi capture card. | Required for HDMI device types (Playstation, Cable SetTop Box, AndroidTV, AppleTV, etc. Optional for Roku if you wish to test a production channel. Ignored for XBox | Can be found by running a terminal command. For MAC: `~/Rokuality/dependencies/ffmpeg_v4.1 -f avfoundation -list_devices true -i ""` and for Windows: `~\Rokuality\dependencies\ffmpeg_win_v4.1\bin\ffmpeg.exe -list_devices true -f dshow -i dummy` |
 | MirrorScreen | If provided with a widthxheight value, then a window will be launched on the user's desktop showing the test activity in real time for the duration of the test session. Useful for debugging tests on remote devices.  | Optional | String - 'widthxheight' format. i.e. '1200x800' will launch a screen mirror with width 1200, and height 800. |

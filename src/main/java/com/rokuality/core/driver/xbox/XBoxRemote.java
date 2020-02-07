@@ -33,4 +33,19 @@ public class XBoxRemote {
 		serverPostHandler.postToServerWithHandling("remote", readySession, RemoteInteractException.class);
 	}
 
+	/**
+	 * Sends a literal string of text to the device. Only relevant if you are interacting with an XBox text input
+	 * and the XBox virtual keyboard is present on the screen.
+	 *
+	 * @param textToType String - The text you wish to type into the input field.
+	 * 
+	 * @throws RemoteInteractException If the input fails to be sent.
+	 */
+	public void sendKeys(String textToType) {
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "send_keys");
+		readySession.put("text", textToType);
+		serverPostHandler.postToServerWithHandling("remote", readySession, RemoteInteractException.class);
+	}
+
 }

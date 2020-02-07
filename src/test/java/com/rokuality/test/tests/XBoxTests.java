@@ -60,18 +60,19 @@ public class XBoxTests {
 		capabilities.addCapability("OCRType", "GoogleVision");
 		capabilities.addCapability("GoogleCredentials", System.getProperty("user.home") + File.separator + "Service.json");
 		
-		// The ip address of your harmony
-		capabilities.addCapability("HomeHubIPAddress", "192.168.1.41");
-		
-		// The name of your device as saved in harmony
-		capabilities.addCapability("DeviceName", "XboxOne");
+		// Your Xbox device ip address.
+		capabilities.addCapability("DeviceIPAddress", "192.168.1.36");
+
+		// XBox Live username and password
+		capabilities.addCapability("DeviceUsername", "xbox_live_username");
+		capabilities.addCapability("DevicePassword", "xbox_live_password");
+
+		// The XBox live id
+		capabilities.addCapability("DeviceID", "xbox_live_console_id");
 
 		// Location (path or url) to an appxbundle file
 		capabilities.addCapability("AppPackage", "https://rokualitypublic.s3.amazonaws.com/XBoxDebug.appxbundle");
 		capabilities.addCapability("App", "MTV");
-		
-		// Your Xbox device ip address.
-		capabilities.addCapability("DeviceIPAddress", "192.168.1.36");
 
 		// OPTIONAL A base image match similarity tolerance between 0 and 1
 		capabilities.addCapability("ImageMatchSimilarity", .89);
@@ -271,8 +272,10 @@ public class XBoxTests {
 		DeviceCapabilities caps = setBaseCapabilities();
 		xboxDriver = new XBoxDriver(SERVER_URL, caps);
 		xboxDriver.options().setElementTimeout(8000);
+		xboxDriver.options().setRemoteInteractDelay(2000);
 
 		xboxDriver.finder().findElement(By.Text("featured"));
+		
 		xboxDriver.remote().pressButton(XBoxButton.UP_ARROW);
 		xboxDriver.remote().pressButton(XBoxButton.RIGHT_ARROW);
 		xboxDriver.remote().pressButton(XBoxButton.RIGHT_ARROW);
@@ -283,8 +286,6 @@ public class XBoxTests {
 		xboxDriver.remote().pressButton(XBoxButton.B);
 		xboxDriver.remote().pressButton(XBoxButton.B);
 		xboxDriver.finder().findElement(By.Text("featured"));
-
-		System.out.println(xboxDriver.screen().getRecording());
 
 	}
 
@@ -408,23 +409,34 @@ public class XBoxTests {
 
 		success = false;
 		caps.addCapability("App", "MTV");
-		caps.removeCapability("HomeHubIPAddress");
+		caps.removeCapability("DeviceUsername");
 		try {
 			xboxDriver = new XBoxDriver(SERVER_URL, caps);
 		} catch (SessionNotStartedException e) {
 			System.out.println(e.getMessage());
-			success = e.getMessage().contains("The HomeHubIPAddress capability cannot be null or empty!");
+			success = e.getMessage().contains("The DeviceUsername capability cannot be null or empty!");
 		}
 		Assert.assertTrue(success);
 
 		success = false;
-		caps.addCapability("HomeHubIPAddress", "1.1.1.1");
-		caps.removeCapability("DeviceName");
+		caps.addCapability("DeviceUsername", "username");
+		caps.removeCapability("DevicePassword");
 		try {
 			xboxDriver = new XBoxDriver(SERVER_URL, caps);
 		} catch (SessionNotStartedException e) {
 			System.out.println(e.getMessage());
-			success = e.getMessage().contains("The DeviceName capability cannot be null or empty!");
+			success = e.getMessage().contains("The DevicePassword capability cannot be null or empty!");
+		}
+		Assert.assertTrue(success);
+
+		success = false;
+		caps.addCapability("DevicePassword", "password");
+		caps.removeCapability("DeviceID");
+		try {
+			xboxDriver = new XBoxDriver(SERVER_URL, caps);
+		} catch (SessionNotStartedException e) {
+			System.out.println(e.getMessage());
+			success = e.getMessage().contains("The DeviceID capability cannot be null or empty!");
 		}
 		Assert.assertTrue(success);
 
@@ -534,6 +546,31 @@ public class XBoxTests {
 		xboxDriver.options().setElementTimeout(0);
 		elementPresent = xboxDriver.finder().findElements(By.Text("no such element")).size() > 0;
 		Assert.assertFalse(elementPresent);
+
+	}
+
+	@Test(groups = { "XBox" })
+	public void sendKeysTest() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		xboxDriver = new XBoxDriver(SERVER_URL, caps);
+
+		xboxDriver.options().setRemoteInteractDelay(2000);
+		xboxDriver.options().setElementTimeout(15000);
+		xboxDriver.finder().findElement(By.Text("featured"));
+
+		xboxDriver.remote().pressButton(XBoxButton.UP_ARROW);
+		xboxDriver.remote().pressButton(XBoxButton.RIGHT_ARROW);
+		xboxDriver.remote().pressButton(XBoxButton.RIGHT_ARROW);
+		xboxDriver.remote().pressButton(XBoxButton.A);
+
+		xboxDriver.finder().findElement(By.Text("search"));
+
+		xboxDriver.remote().pressButton(XBoxButton.DOWN_ARROW);
+		xboxDriver.remote().pressButton(XBoxButton.A);
+
+		xboxDriver.remote().sendKeys("catfish");
+		xboxDriver.finder().findElement(By.Text("catfish"));
 
 	}
 
