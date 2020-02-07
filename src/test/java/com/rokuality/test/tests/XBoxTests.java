@@ -64,11 +64,11 @@ public class XBoxTests {
 		capabilities.addCapability("DeviceIPAddress", "192.168.1.36");
 
 		// XBox Live username and password
-		capabilities.addCapability("DeviceUsername", "baclark77@yahoo.com");
-		capabilities.addCapability("DevicePassword", "tufNewcyd77#");
+		capabilities.addCapability("DeviceUsername", "xbox_live_username");
+		capabilities.addCapability("DevicePassword", "xbox_live_password");
 
 		// The XBox live id
-		capabilities.addCapability("DeviceID", "FD00130488C83472");
+		capabilities.addCapability("DeviceID", "xbox_live_console_id");
 
 		// Location (path or url) to an appxbundle file
 		capabilities.addCapability("AppPackage", "https://rokualitypublic.s3.amazonaws.com/XBoxDebug.appxbundle");
