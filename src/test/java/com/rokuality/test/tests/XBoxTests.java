@@ -64,11 +64,11 @@ public class XBoxTests {
 		capabilities.addCapability("DeviceIPAddress", "192.168.1.36");
 
 		// XBox Live username and password
-		capabilities.addCapability("DeviceUsername", "xbox_live_user_name");
-		capabilities.addCapability("DevicePassword", "xbox_live_password#");
+		capabilities.addCapability("DeviceUsername", "baclark77@yahoo.com");
+		capabilities.addCapability("DevicePassword", "tufNewcyd77#");
 
 		// The XBox live id
-		capabilities.addCapability("DeviceID", "xbox_live_device_id");
+		capabilities.addCapability("DeviceID", "FD00130488C83472");
 
 		// Location (path or url) to an appxbundle file
 		capabilities.addCapability("AppPackage", "https://rokualitypublic.s3.amazonaws.com/XBoxDebug.appxbundle");
@@ -409,23 +409,34 @@ public class XBoxTests {
 
 		success = false;
 		caps.addCapability("App", "MTV");
-		caps.removeCapability("HomeHubIPAddress");
+		caps.removeCapability("DeviceUsername");
 		try {
 			xboxDriver = new XBoxDriver(SERVER_URL, caps);
 		} catch (SessionNotStartedException e) {
 			System.out.println(e.getMessage());
-			success = e.getMessage().contains("The HomeHubIPAddress capability cannot be null or empty!");
+			success = e.getMessage().contains("The DeviceUsername capability cannot be null or empty!");
 		}
 		Assert.assertTrue(success);
 
 		success = false;
-		caps.addCapability("HomeHubIPAddress", "1.1.1.1");
-		caps.removeCapability("DeviceName");
+		caps.addCapability("DeviceUsername", "username");
+		caps.removeCapability("DevicePassword");
 		try {
 			xboxDriver = new XBoxDriver(SERVER_URL, caps);
 		} catch (SessionNotStartedException e) {
 			System.out.println(e.getMessage());
-			success = e.getMessage().contains("The DeviceName capability cannot be null or empty!");
+			success = e.getMessage().contains("The DevicePassword capability cannot be null or empty!");
+		}
+		Assert.assertTrue(success);
+
+		success = false;
+		caps.addCapability("DevicePassword", "password");
+		caps.removeCapability("DeviceID");
+		try {
+			xboxDriver = new XBoxDriver(SERVER_URL, caps);
+		} catch (SessionNotStartedException e) {
+			System.out.println(e.getMessage());
+			success = e.getMessage().contains("The DeviceID capability cannot be null or empty!");
 		}
 		Assert.assertTrue(success);
 
@@ -544,9 +555,22 @@ public class XBoxTests {
 		DeviceCapabilities caps = setBaseCapabilities();
 		xboxDriver = new XBoxDriver(SERVER_URL, caps);
 
-		// TODO update test scenario for send keys
-		Assert.fail();
-		xboxDriver.remote().sendKeys("some text to type");
+		xboxDriver.options().setRemoteInteractDelay(2000);
+		xboxDriver.options().setElementTimeout(15000);
+		xboxDriver.finder().findElement(By.Text("featured"));
+
+		xboxDriver.remote().pressButton(XBoxButton.UP_ARROW);
+		xboxDriver.remote().pressButton(XBoxButton.RIGHT_ARROW);
+		xboxDriver.remote().pressButton(XBoxButton.RIGHT_ARROW);
+		xboxDriver.remote().pressButton(XBoxButton.A);
+
+		xboxDriver.finder().findElement(By.Text("search"));
+
+		xboxDriver.remote().pressButton(XBoxButton.DOWN_ARROW);
+		xboxDriver.remote().pressButton(XBoxButton.A);
+
+		xboxDriver.remote().sendKeys("catfish");
+		xboxDriver.finder().findElement(By.Text("catfish"));
 
 	}
 
