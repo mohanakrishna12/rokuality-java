@@ -78,9 +78,9 @@ In this example, you can provide a url to your locator image snippet and the ser
 #### Finding elements with Roku WebDriver:
 Optionally when testing on Roku you can provide the following native based locator types:
 ```java
-        Element elementByText = rokuDriver.finder().findElement(RokuBy.Text("text"));
-        Element elementByTag = rokuDriver.finder().findElement(RokuBy.Tag("tag"));
-        Element elementByAttribute = rokuDriver.finder().findElement(RokuBy.Attribute("attribute", "value"));
+    Element elementByText = rokuDriver.finder().findElement(RokuBy.Text("text"));
+    Element elementByTag = rokuDriver.finder().findElement(RokuBy.Tag("tag"));
+    Element elementByAttribute = rokuDriver.finder().findElement(RokuBy.Attribute("attribute", "value"));
 ```
 
 #### Finding multi match elements:
@@ -196,8 +196,8 @@ For Roku devices, it's possible to get details about your media player in flight
 ```java
     // gets information about the media in flight including state, bitrate, encoding information, and much much more!
     RokuMediaPlayerInfo mediaPlayerInfo = rokuDriver.info().getMediaPlayerInfo();
-	Assert.assertFalse(mediaPlayerInfo.isError());
-	Assert.assertFalse(mediaPlayerInfo.isLive());
+    Assert.assertFalse(mediaPlayerInfo.isError());
+    Assert.assertFalse(mediaPlayerInfo.isLive());
     Assert.assertEquals(mediaPlayerInfo.getState(), "play");
     System.out.println(mediaPlayerInfo.getBitrate());
 ```
@@ -259,8 +259,8 @@ Various capabilities and values can be provided and passed to your driver instan
     capabilities.addCapability("DeviceIPAddress", "yourdeviceipaddress");
 
     // XBox Live username and password
-	capabilities.addCapability("DeviceUsername", "console_xbox_live_username");
-	capabilities.addCapability("DevicePassword", "console_xbox_live_password");
+    capabilities.addCapability("DeviceUsername", "console_xbox_live_username");
+    capabilities.addCapability("DevicePassword", "console_xbox_live_password");
 
     // The XBox live  console id
     // can be found from your xbox dev settings page at https://your_xbox_device_ip:11443/#Settings
