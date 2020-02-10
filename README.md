@@ -214,15 +214,15 @@ Roku provides a way to measure your app's cpu and memory utilization through the
 ```java
     // set your 'EnablePerformanceProfiling' capability to true and initiate your driver
     DeviceCapabilities caps = setBaseCapabilities();
-	caps.addCapability("EnablePerformanceProfiling", true);
-	rokuDriver = new RokuDriver(SERVER_URL, caps);
+    caps.addCapability("EnablePerformanceProfiling", true);
+    rokuDriver = new RokuDriver(SERVER_URL, caps);
 
     // now at any point during the test we can invoke the following command and get back the .bsprof file with
     // cpu and memory utilization data of our application under test
-	File perfProfile = rokuDriver.info().getPerformanceProfile();
-	long perfProfileMBSize = perfProfile.length() / 1000000;
-	System.out.println("Brightscript profile saved to: " + perfProfile.getAbsolutePath());
-	System.out.println("Brightscript profile MB size: " + perfProfileMBSize);
+    File perfProfile = rokuDriver.info().getPerformanceProfile();
+    long perfProfileMBSize = perfProfile.length() / 1000000;
+    System.out.println("Brightscript profile saved to: " + perfProfile.getAbsolutePath());
+    System.out.println("Brightscript profile MB size: " + perfProfileMBSize);
 ```
 
 Once you've retrieved your .bsprof file during test - this file can be uploaded to [Roku's profiler visualization tool](http://devtools.web.roku.com/profiler/viewer/) to see the performance data in a friendly user format.
