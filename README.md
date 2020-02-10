@@ -208,6 +208,25 @@ For Roku devices, it's possible to get the debug logs as follows:
     rokuDriver.info().getDebugLogs();
 ```
 
+#### Getting performance data from your application during test (ROKU ONLY):
+Roku provides a way to measure your app's cpu and memory utilization through their brightscript profiler. Our platform allows you to access the brightscript performance profile during the course of your test. To utilize this functionality you must provide the 'EnablePerformanceProfiling' capability on test session start and set the value to true. This will take your provided sideloadable .zip package, update the manifest with the necessary values for profile capturing, and then recompile for automation on your device.
+
+```java
+    // set your 'EnablePerformanceProfiling' capability to true and initiate your driver
+    DeviceCapabilities caps = setBaseCapabilities();
+    caps.addCapability("EnablePerformanceProfiling", true);
+    rokuDriver = new RokuDriver(SERVER_URL, caps);
+
+    // now at any point during the test we can invoke the following command and get back the .bsprof file with
+    // cpu and memory utilization data of our application under test
+    File perfProfile = rokuDriver.info().getPerformanceProfile();
+    long perfProfileMBSize = perfProfile.length() / 1000000;
+    System.out.println("Brightscript profile saved to: " + perfProfile.getAbsolutePath());
+    System.out.println("Brightscript profile MB size: " + perfProfileMBSize);
+```
+
+Once you've retrieved your .bsprof file during test - this file can be uploaded to [Roku's profiler visualization tool](http://devtools.web.roku.com/profiler/viewer/) to see the performance data in a friendly user format.
+
 #### Device Capabilities explained:
 Various capabilities and values can be provided and passed to your driver instance at startup. Some of them are required and others are optional. The following are the minimum capabilities **required** to start a driver session.
 
@@ -316,6 +335,7 @@ Various capabilities and values can be provided and passed to your driver instan
 | VideoCaptureInput | The name of your video card capture video input if running an HDMI connected test. Will vary by the type of hdmi capture card. | Required for HDMI device types (Playstation, Cable SetTop Box, AndroidTV, AppleTV, etc. Optional for Roku if you wish to test a production channel. Ignored for XBox | Can be found by running a terminal command. For MAC: `~/Rokuality/dependencies/ffmpeg_v4.1 -f avfoundation -list_devices true -i ""` and for Windows: `~\Rokuality\dependencies\ffmpeg_win_v4.1\bin\ffmpeg.exe -list_devices true -f dshow -i dummy` |
 | AudioCaptureInput | The name of your video card capture audio input if running an HDMI connected test. Will vary by the type of hdmi capture card. | Required for HDMI device types (Playstation, Cable SetTop Box, AndroidTV, AppleTV, etc. Optional for Roku if you wish to test a production channel. Ignored for XBox | Can be found by running a terminal command. For MAC: `~/Rokuality/dependencies/ffmpeg_v4.1 -f avfoundation -list_devices true -i ""` and for Windows: `~\Rokuality\dependencies\ffmpeg_win_v4.1\bin\ffmpeg.exe -list_devices true -f dshow -i dummy` |
 | MirrorScreen | If provided with a widthxheight value, then a window will be launched on the user's desktop showing the test activity in real time for the duration of the test session. Useful for debugging tests on remote devices.  | Optional | String - 'widthxheight' format. i.e. '1200x800' will launch a screen mirror with width 1200, and height 800. |
+| EnablePerformanceProfiling | Roku only. If provided your sideloadable .zip package will be updated for performance profiling. Then during the course of the execution you can retrieve the .bsprof file with CPU and memory utilization data from your channel.  | Optional | Boolean - true to allow for performance capturing. Defaults to false. |
 
 #### Element Timeouts and Polling:
 There are two main options when it comes to element timeouts and polling

@@ -19,6 +19,7 @@ import com.rokuality.core.enums.SessionStatus;
 import com.rokuality.core.exceptions.NoSuchElementException;
 import com.rokuality.core.exceptions.ServerFailureException;
 import com.rokuality.core.exceptions.SessionNotStartedException;
+import com.rokuality.core.utils.SleepUtils;
 
 import org.json.simple.JSONObject;
 import org.testng.annotations.AfterMethod;
@@ -1075,6 +1076,30 @@ public class RokuTests {
 
 		String logContent = rokuDriver.info().getDebugLogs();
 		Assert.assertTrue(logContent.toLowerCase().contains("bet"));
+
+	}
+
+	@Test(groups = { "Roku" })
+	public void getPerformanceProfile() {
+
+		DeviceCapabilities caps = setBaseCapabilities();
+		caps.addCapability("EnablePerformanceProfiling", true);
+		rokuDriver = new RokuDriver(SERVER_URL, caps);
+
+		SleepUtils.sleep(10000);
+		File perfProfile = rokuDriver.info().getPerformanceProfile();
+		long perfProfileMBSize = perfProfile.length() / 1000000;
+		System.out.println("Brightscript profile saved to: " + perfProfile.getAbsolutePath());
+		System.out.println("Brightscript profile MB size: " + perfProfileMBSize);
+		Assert.assertTrue(perfProfile.exists() && perfProfileMBSize >= 2);
+
+		SleepUtils.sleep(30000);
+
+		perfProfile = rokuDriver.info().getPerformanceProfile();
+		perfProfileMBSize = perfProfile.length() / 1000000;
+		System.out.println("Brightscript profile saved to: " + perfProfile.getAbsolutePath());
+		System.out.println("Brightscript profile MB size: " + perfProfileMBSize);
+		Assert.assertTrue(perfProfile.exists() && perfProfileMBSize >= 5);
 
 	}
 
