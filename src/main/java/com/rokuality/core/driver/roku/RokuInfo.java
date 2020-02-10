@@ -1,8 +1,11 @@
 package com.rokuality.core.driver.roku;
 
+import java.io.File;
+
 import com.rokuality.core.driver.ServerPostHandler;
 import com.rokuality.core.exceptions.ServerFailureException;
 import com.rokuality.core.httpexecutor.HttpClient;
+import com.rokuality.core.utils.FileToStringUtils;
 import com.rokuality.core.utils.JsonUtils;
 
 import org.json.simple.JSONObject;
@@ -72,6 +75,29 @@ public class RokuInfo {
 		readySession.put("action", "get_debug_logs");
 		JSONObject resultObj = serverPostHandler.postToServerWithHandling("info", readySession, ServerFailureException.class);
 		return String.valueOf(resultObj.get("log_content"));
+	}
+
+	/**
+	 * Gets the Roku performance profile (.bsprof) file from the device which can be used to monitor the apps CPU and memory behavior.
+	 * 
+	 * NOTE - you must pass the 'EnablePerformanceProfiling' capability on session start with a value of true to enable this capture.
+	 * The returned .bsprof file can then be loaded into the Roku brightscript profile visualizer tool at http://devtools.web.roku.com/profiler/viewer/
+	 * and will showcase the apps CPU and memory utilizations and help diagnose any performance issues on the device.
+	 * 
+	 * Note - calling this method will reset the performance profile capture on the device and will relaunch the app.
+	 * 
+	 * @return File - The Roku brightscript profile which can be loaded into http://devtools.web.roku.com/profiler/viewer/
+	 * 
+	 * @throws ServerFailurException - If the user did NOT start the test session with the 'EnablePerformanceProfiling' capability set to true, 
+	 * Or an error occurred during the collection of the performance profile data.
+	 */
+	public File getPerformanceProfile() {
+		JSONObject readySession = JsonUtils.deepCopy(session);
+		readySession.put("action", "performance_profile");
+		JSONObject resultObj = serverPostHandler.postToServerWithHandling("info", readySession, ServerFailureException.class);
+		String profileContent = String.valueOf(resultObj.get("performance_profiling_data"));
+		String profileExt = String.valueOf(resultObj.get("performance_profile_file_ext"));
+		return new FileToStringUtils().convertToFile(profileContent, profileExt);
 	}
 
 }
