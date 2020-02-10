@@ -88,7 +88,7 @@ public class RokuInfo {
 	 * 
 	 * @return File - The Roku brightscript profile which can be loaded into http://devtools.web.roku.com/profiler/viewer/
 	 * 
-	 * @throws ServerFailurException - If the user did NOT start the test session with the 'EnablePerformanceProfiling' capability set to true, 
+	 * @throws ServerFailureException - If the user did NOT start the test session with the 'EnablePerformanceProfiling' capability set to true, 
 	 * Or an error occurred during the collection of the performance profile data.
 	 */
 	public File getPerformanceProfile() {
