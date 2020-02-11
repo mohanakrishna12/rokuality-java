@@ -396,7 +396,15 @@ public class RokuTests {
 		rokuDriver = new RokuDriver(SERVER_URL, caps);
 
 		RokuDeviceInfo deviceInfo = rokuDriver.info().getDeviceInfo();
-		Assert.assertTrue(deviceInfo.getVendorName().equals("Roku"));
+
+		// gets the json data of all available key/value device info entries
+		JSONObject deviceInfoObj = deviceInfo.getDeviceInfoJSON();
+		System.out.println(deviceInfoObj.toJSONString());
+		Assert.assertTrue(deviceInfoObj.containsKey("vendor-name"));
+
+		// alternatively you can get individual device info attribute values directly
+		Assert.assertEquals("Roku", deviceInfo.getDeviceInfoAttribute("vendor-name"));
+		Assert.assertEquals(true, deviceInfo.getDeviceInfoAttribute("search-channels-enabled"));
 
 	}
 
