@@ -1,3 +1,6 @@
+1.2.8 - Changes from 1.2.7
+1. HOTFIX - Updates the rokuDriver.info().getDeviceInfo() call to return either the full Roku device info JSON object of key/value device info entries, or query for a specific value by key name. This fixes a break by various Roku device types in the latest Roku os release and also future prooofs the class and query.
+
 1.2.7 - Changes from 1.2.6
 1. Adds a new rokuDriver.info().getPerformanceProfile() method for capturing the Roku performance profile data including CPU and memory utilization during the course of a Roku test. Requires the 'EnablePerformanceProfiling' capability to be set to true on session start. (requires Rokuaity server v1.2.8 or higher)
 
