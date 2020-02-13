@@ -18,7 +18,7 @@ public class RokuDeviceInfo {
     /**
      * Gets the device info JSONObject of key/value device info entries.
      * 
-     * @return JSONObject
+     * @return JSONObject - The complete Roku device info JSONObject of device info name/values.
      */
     public JSONObject getDeviceInfoJSON() {
         return deviceInfoObj;
@@ -28,7 +28,8 @@ public class RokuDeviceInfo {
      * Gets the device info Object value of the provided attribute name.
      * i.e. getDeviceInfoAttribute("friendly-device-name");
      * 
-     * @return JSONObject
+     * @param attributeName - The attribute name of the value to be returned.
+     * @return Object - The Roku device info attribute value.
      */
     public Object getDeviceInfoAttribute(String attributeName) {
         return (Object) deviceInfoObj.get(attributeName);
